@@ -46,15 +46,16 @@ fk = f(xk);
 gradfk = gradf(xk);
 k = 0;
 gradfk_norm = norm(gradfk);
+Hessfk = Hessf(xk);
 
 delta = sqrt(eps);
 
 
 while k < kmax && gradfk_norm >= tolgrad
-    lambda_min = min(eig(Hessf));
+    lambda_min = min(eig(Hessfk));
     tau_k  =max(0, delta-lambda_min);
-    E_k = tau_k*eye(size(Hessf,1));
-    B_k = Hessf + E_k;
+    E_k = tau_k*eye(size(Hessfk,1));
+    B_k = Hessfk + E_k;
     
     % Compute the descent direction as solution of
     % Hessf(xk) p = - gradf(xk)
@@ -67,7 +68,7 @@ while k < kmax && gradfk_norm >= tolgrad
     % If you want to silence the messages about "solution quality", use
     % instead: 
     % [pk, flagk, relresk, iterk, resveck] = pcg(Hessf(xk), -gradfk);
-    [pk, ~, ~, iterk, ~] = pcg(B_k(xk), -gradfk);
+    [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % Reset the value of alpha
