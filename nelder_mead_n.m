@@ -1,18 +1,16 @@
-function[simplex] = nelder_mead(x0, fun, n, rho, chi, gamma, sigma, kmax, tol)
+function[simplex] = nelder_mead_n(x0, fun, n, rho, chi, gamma, sigma, kmax, tol)
 
     % Parametro di perturbazione
-    delta = 0.5 * norm(x0);
+    delta = 0.05 * norm(x0);
 
     % Più è grande delta scelto, più iterazioni sono necessarie alla
     % convergenza
 
-    % Genero gli altri punti del simplesso
-    % GENERALIZZARE CON N SE POSSIBILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    x1 = x0 + [delta; 0];
-    x2 = x0 + [0; delta];
-
-    % Creo il simplesso
-    simplex = [x0, x1, x2];
+    % Creo il simplesso 
+    simplex = x0.*ones(1, n+1);
+    for k=1:n
+        simplex(k,k+1) = simplex(k,k+1) + delta;
+    end
 
     f = zeros(1,n+1);
   
@@ -75,9 +73,10 @@ function[simplex] = nelder_mead(x0, fun, n, rho, chi, gamma, sigma, kmax, tol)
                 simplex(:,n+1) = x_c;
                 disp("Accetto contrazione")
 
-            else % shrink % SISTEMARE PER GENERALIZZARE !!!!!!!
-                simplex(:,2) = simplex(:,1) + sigma * (simplex(:,2) - simplex(:,1));
-                simplex(:,3) = simplex(:,1) + sigma * (simplex(:,3) - simplex(:,1));
+            else % shrink
+                for i=2:n+1
+                    simplex(:,i) = simplex(:,1) + sigma * (simplex(:,i)-simplex(:,1));
+                end
                 disp("Accetto shrink")
     
             end
@@ -91,10 +90,6 @@ function[simplex] = nelder_mead(x0, fun, n, rho, chi, gamma, sigma, kmax, tol)
     for i = 1:n+1
             f(i) = fun(simplex(:,i));
     end
-    
-    fprintf('Iter %d: x = [%f, %f], f = %.6f\n', k, simplex(1,1), simplex(2,1), f(1));
-    fprintf('Iter %d: x = [%f, %f], f = %.6f\n', k, simplex(1,2), simplex(2,2), f(2));
-    fprintf('Iter %d: x = [%f, %f], f = %.6f\n', k, simplex(1,3), simplex(2,3), f(3));
     
     % Criterio di arresto basato sulla variazione dei valori della
     % funzione, diametro del simplesso, valore massimo e minimo della

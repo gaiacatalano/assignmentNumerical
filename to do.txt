@@ -1,0 +1,4 @@
+usare entrambi i punti di partenza per i test
+usare i 10 starting points per il prob 32
+fare gli altri 2 problemi
+generalizzare per i valori diversi di n e d
