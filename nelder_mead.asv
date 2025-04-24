@@ -1,22 +1,23 @@
-function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
+function[simplex] = nelder_mead(x0, fun, n, rho, chi, gamma, sigma, kmax, tol)
 
     % Parametro di perturbazione
-    delta = 0.05 * norm(x0);
+    delta = 0.5 * norm(x0);
 
     % Più è grande delta scelto, più iterazioni sono necessarie alla
     % convergenza
 
     % Genero gli altri punti del simplesso
+    % GENERALIZZARE CON N SE POSSIBILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     x1 = x0 + [delta; 0];
     x2 = x0 + [0; delta];
 
     % Creo il simplesso
     simplex = [x0, x1, x2];
 
-    f = zeros(1,3);
+    f = zeros(1,n+1);
   
     % Valuto la funzione nei punti del simplesso
-    for i = 1:3
+    for i = 1:n+1
             f(i) = fun(simplex(:,i));
     end
     prev_f = f;
@@ -31,7 +32,7 @@ function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
 
         % Stampa i punti del simplesso ordinato e i valori della funzione
         disp('Punti del simplesso ordinato e valori f:');
-        for i = 1:3
+        for i = 1:n+1
             fprintf('x%d = [', i);
             fprintf('%f ', simplex(:,i));
             fprintf('], f = %.6f\n', f_sorted(i));
@@ -39,15 +40,15 @@ function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
 
         
         % Baricentro di n punti migliori
-        x_bar = mean(simplex(:,1:2), 2);
+        x_bar = mean(simplex(:,1:n), 2);
         
         % Riflessione
         x_r = x_bar + rho*(x_bar - simplex(:,end));
         f_r = fun(x_r);
 
         % se f_r compresa tra f_1 e f_n -> accetto x_r al posto di x_n+1
-        if(f_sorted(1) <= f_r && f_r <= f_sorted(2))
-           simplex(:,3) = x_r;
+        if(f_sorted(1) <= f_r && f_r <= f_sorted(n))
+           simplex(:,n+1) = x_r;
            disp("Accetto riflessione")
  
         % altrimenti se f_r < f_1 -> espansione
@@ -56,12 +57,12 @@ function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
             f_e = fun(x_e);
 
             if(f_e < f_r)
-                simplex(:,3) = x_e;
+                simplex(:,n+1) = x_e;
                 %continue
                 disp("Accetto espansione")
             
             else
-                simplex(:,3) = x_r;
+                simplex(:,n+1) = x_r;
                 %continue
                 disp("Accetto riflessione non espansione")
 
@@ -70,11 +71,11 @@ function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
         else % contrazione
             x_c = x_bar - gamma*(x_bar - x_r);
             f_c = fun(x_c);
-            if(f_c < f_sorted(3))
-                simplex(:,3) = x_c;
+            if(f_c < f_sorted(n+1))
+                simplex(:,n+1) = x_c;
                 disp("Accetto contrazione")
 
-            else % shrink
+            else % shrink % SISTEMARE PER GENERALIZZARE !!!!!!!
                 simplex(:,2) = simplex(:,1) + sigma * (simplex(:,2) - simplex(:,1));
                 simplex(:,3) = simplex(:,1) + sigma * (simplex(:,3) - simplex(:,1));
                 disp("Accetto shrink")
@@ -87,7 +88,7 @@ function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
     % Condizioni di arresto basate su diametro e differenze dei valori di f
     % calcolata nel simplesso attuale
 
-    for i = 1:3
+    for i = 1:n+1
             f(i) = fun(simplex(:,i));
     end
     
