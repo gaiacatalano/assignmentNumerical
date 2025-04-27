@@ -32,7 +32,7 @@ chi_nm = 2;
 gamma_nm = 0.5;
 sigma_nm = 0.5;
 
-simplex_nm = nelder_mead_n(x_bar*ones(n,1), F, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+%simplex_nm = nelder_mead_n(x_bar*ones(n,1), F, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
 
 % Modified
 
@@ -52,7 +52,7 @@ btmax = 20;
 [xk, fk, gradfk_norm, k, xseq, btseq] = ...
     modified_newton_bcktrck(x_bar*ones(1,n), F, gradf, Hessf, ...
     kmax, tolgrad, c1, rho, btmax);
-x_newton = xk;
+x_newton = xk
 
 
 % Problem 14
@@ -65,6 +65,4 @@ end
 F2 = discrete_boundary_value_problem(n,x_bar2, h);
 
 % Nelder Mead
-simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
-
-%Newton
+%simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
