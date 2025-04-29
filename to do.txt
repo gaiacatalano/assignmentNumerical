@@ -1,5 +1,13 @@
+riscrivere codice modified newton copiato dal prof
+
 usare entrambi i punti di partenza per i test
-usare i 10 starting points per il prob 32
-fare gli altri 2 problemi
+
 generalizzare per i valori diversi di n e d
-cambiare gradiente e hessiana per il modified newton
+
+eventualmente usare hessiana sparsa quando generalizziamo a dim superiori
+
+usare i 10 starting points dei problemi
+
+controllare perche problema 1 newton torna vettore riga e problema 2 vettore colonna
+
+controllare che i risultati abbiano senso
