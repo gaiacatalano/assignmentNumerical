@@ -17,7 +17,7 @@ function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
   
     % Valuto la funzione nei punti del simplesso
     for i = 1:3
-            f(i) = fun(simplex(:,i));
+        f(i) = fun(simplex(:,i));
     end
     prev_f = f;
 

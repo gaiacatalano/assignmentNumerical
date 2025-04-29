@@ -7,64 +7,91 @@ rng(349131);
 
 % Dimension
 d = 3:1:5;
-% n = [10,25,50];
-n = 10;
-
 num_points = 10;
-
-% Problem 32
-x_bar = -1;
-starting_points = 2*rand(n, num_points) - 1;  % genera valori in [-1, 1]
-starting_points = starting_points + x_bar;    % trasla il centro in x
-
-% Funzione
-F = broyden_tridiagonal(n, x_bar);
-
-% Nelder-Mead
 
 % Stopping parameters
 tol = 1e-8;
 kmax = 2000;
+    
 
-% Nelder-Mead parameters
-rho_nm = 1;
-chi_nm = 2;
-gamma_nm = 0.5;
-sigma_nm = 0.5;
+for p=1:length(d)
+    n = 10^d(p);
+    % Problem 31
+    x_bar = -1;
+    starting_points = 2*rand(n, num_points) - 1;  % genera valori in [-1, 1]
+    starting_points = starting_points + x_bar;    % trasla il centro in x
 
-simplex_nm = nelder_mead_n(x_bar*ones(n,1), F, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+    % Funzione
+    [F, grad, H] = broyden_tridiagonal(n, x_bar);
 
-% Modified
+    % Modified
 
-% Backtracking parameters
-rho = 0.5;
-c = 10e-4;
-
-% Newton parameters
-tolgrad = 1e-8;
-gradf = @(x) [ -400*x(1)*(x(2) - x(1)^2) - 2*(1 - x(1));
-                200*(x(2) - x(1)^2) ];
-Hessf = @(x) [ 1200*x(1)^2 - 400*x(2) + 2, -400*x(1);
-               -400*x(1), 200 ];
-c1 = 1e-8;
-btmax = 20;
-
-[xk, fk, gradfk_norm, k, xseq, btseq] = ...
-    modified_newton_bcktrck(x_bar*ones(1,n), F, gradf, Hessf, ...
-    kmax, tolgrad, c1, rho, btmax);
-x_newton = xk;
+    % Backtracking parameters
+    rho = 0.5;
+    c = 10e-4;
+    
+    % Newton parameters
+    tolgrad = 1e-8;
+    c1 = 1e-8;
+    btmax = 20;
+    
+    [xk, fk, gradfk_norm, k, xseq, btseq] = ...
+        modified_newton_bcktrck(x_bar*ones(1,n), F, grad , H, ...
+        kmax, tolgrad, c1, rho, btmax);
+    x_newton = xk;
 
 
-% Problem 14
-x_bar2 = zeros(n,1);
-h = 1/(n+1);
-for i=1:n
-    x_bar2(i) = i*h*(1-i*h);
+    % Problem 14
+    x_bar2 = zeros(n,1);
+    h = 1/(n+1);
+    for i=1:n
+        x_bar2(i) = i*h*(1-i*h);
+    end
+    
+    [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
+
+    %Newton
+    [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
+        modified_newton_bcktrck(x_bar2, F2, grad2 , H2, ...
+        kmax, tolgrad, c1, rho, btmax);
+    x_newton2 = xk2;
+
+    x_newton
+    x_newton2
 end
 
-F2 = discrete_boundary_value_problem(n,x_bar2, h);
+for n = [10,25,50]
+    
+    % Problem 31
+    x_bar = -1;
+    starting_points = 2*rand(n, num_points) - 1;  % genera valori in [-1, 1]
+    starting_points = starting_points + x_bar;    % trasla il centro in x
+    
+    % Funzione
+    [F, grad, H] = broyden_tridiagonal(n, x_bar);
+    
+    % Nelder-Mead
+    
+    % Nelder-Mead parameters
+    rho_nm = 1;
+    chi_nm = 2;
+    gamma_nm = 0.5;
+    sigma_nm = 0.5;
+    
+    simplex_nm = nelder_mead_n(x_bar*ones(n,1), F, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+       
+    % Problem 14
+    x_bar2 = zeros(n,1);
+    h = 1/(n+1);
+    for i=1:n
+        x_bar2(i) = i*h*(1-i*h);
+    end
+    
+    [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
+    
+    % Nelder Mead
+    simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
 
-% Nelder Mead
-simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
-
-%Newton
+    simplex_nm(1)
+    simplex_nm2(1)
+end
