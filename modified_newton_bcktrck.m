@@ -52,7 +52,11 @@ delta = sqrt(eps);
 
 
 while k < kmax && gradfk_norm >= tolgrad
-    lambda_min = min(eig(Hessfk));
+    if issparse(Hessfk)
+        lambda_min = eigs(Hessfk, 1, 'SA');
+    else
+        lambda_min = min(eig(Hessfk));
+    end
     tau_k  =max(0, delta-lambda_min);
     E_k = tau_k*eye(size(Hessfk,1));
     B_k = Hessfk + E_k;

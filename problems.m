@@ -6,7 +6,7 @@ close all
 rng(349131);
 
 % Dimension
-d = 3:1:5;
+d = 3:1:5; % con d=3 funziona, con 4 e 5 non va più avanti
 num_points = 10;
 
 % Stopping parameters
@@ -81,16 +81,16 @@ for n = [10,25,50]
     simplex_nm = nelder_mead_n(x_bar*ones(n,1), F, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
        
 
-    % Problem 14
-    x_bar2 = zeros(n,1);
-    h = 1/(n+1);
-    for i=1:n
-        x_bar2(i) = i*h*(1-i*h);
-    end
-    [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
-    simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+    % % Problem 14
+    % x_bar2 = zeros(n,1);
+    % h = 1/(n+1);
+    % for i=1:n
+    %     x_bar2(i) = i*h*(1-i*h);
+    % end
+    % [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
+    % simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
 
     % Restituisco valore migliore di ogni simplesso
-    simplex_nm(1)
-    simplex_nm2(1)
+    simplex_nm(:,1)
+    %simplex_nm2(:,1)
 end
