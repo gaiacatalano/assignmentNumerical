@@ -1,6 +1,7 @@
 function [xk, fk, gradfk_norm, k, xseq, btseq] = ...
     modified_newton_bcktrck(x0, f, gradf, Hessf, ...
     kmax, tolgrad, c1, rho, btmax)
+
 %
 % [xk, fk, gradfk_norm, k, xseq, btseq] = ...
     % newton_bcktrck(x0, f, gradf, Hessf, ...
@@ -58,7 +59,7 @@ while k < kmax && gradfk_norm >= tolgrad
         lambda_min = min(eig(Hessfk));
     end
     tau_k  =max(0, delta-lambda_min);
-    E_k = tau_k*eye(size(Hessfk,1));
+    E_k = tau_k*speye(size(Hessfk,1));
     B_k = Hessfk + E_k;
     
     % Compute the descent direction as solution of

@@ -6,11 +6,11 @@ close all
 rng(349131);
 
 % Dimension
-d = 3:1:5; % con d=3 funziona, con 4 e 5 non va più avanti
+d = 3:1:5; 
 num_points = 10;
 
 % Stopping parameters
-tol = 1e-8;
+tol = 1e-5;
 kmax = 2000;
     
 % Ciclo for per valori di n adatti a Newton
@@ -23,7 +23,7 @@ for p=1:length(d)
     c = 10e-4;
     
     % Newton parameters
-    tolgrad = 1e-8;
+    tolgrad = 1e-5;
     c1 = 1e-8;
     btmax = 20;
 
@@ -37,27 +37,27 @@ for p=1:length(d)
     
     [F, grad, H] = broyden_tridiagonal(n, x_bar);    
     [xk, fk, gradfk_norm, k, xseq, btseq] = ...
-        modified_newton_bcktrck(x_bar*ones(1,n), F, grad , H, ...
+        modified_newton_bcktrck(x_bar*ones(n,1), F, grad , H, ...
         kmax, tolgrad, c1, rho, btmax);
     x_newton = xk;
 
 
-    % Problem 14
-    x_bar2 = zeros(n,1);
-    h = 1/(n+1);
-    for i=1:n
-        x_bar2(i) = i*h*(1-i*h);
-    end
-    [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
-    [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
-        modified_newton_bcktrck(x_bar2, F2, grad2 , H2, ...
-        kmax, tolgrad, c1, rho, btmax);
-    x_newton2 = xk2;
+    % % Problem 14
+    % x_bar2 = zeros(n,1);
+    % h = 1/(n+1);
+    % for i=1:n
+    %     x_bar2(i) = i*h*(1-i*h);
+    % end
+    % [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
+    % [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
+    %     modified_newton_bcktrck(x_bar2, F2, grad2 , H2, ...
+    %     kmax, tolgrad, c1, rho, btmax);
+    % x_newton2 = xk2;
 
 
     % Restituisco valori newton dei problemi
     x_newton
-    x_newton2
+    %x_newton2
 end
 
 % Ciclo for per valori di n adatti a Nelder-Mead
