@@ -42,7 +42,7 @@ for p=1:length(d)
     x_newton = xk;
 
 
-    % % Problem 14
+    % Problem 14
     x_bar2 = zeros(n,1);
     h = 1/(n+1);
     for i=1:n
@@ -54,10 +54,20 @@ for p=1:length(d)
         kmax, tolgrad, c1, rho, btmax);
     x_newton2 = xk2;
 
+    % Problem 1
+    x_bar3 = zeros(n,1);         
+    x_bar3(mod(1:n,2)==1) = -1.2; 
+    x_bar3(mod(1:n,2)==0) = 1.0;  
+    [F3, grad3, H3] = chained_rosenbrock(n,x_bar3);
+    [xk3, fk3, gradfk_norm3, k3, xseq3, btseq3] = ...
+        modified_newton_bcktrck(x_bar3, F3, grad3 , H3, ...
+        kmax, tolgrad, c1, rho, btmax);
+    x_newton3 = xk3;
 
     % Restituisco valori newton dei problemi
     x_newton
     x_newton2
+    x_newton3
 end
 
 % Ciclo for per valori di n adatti a Nelder-Mead
@@ -81,7 +91,7 @@ for n = [10,25,50]
     simplex_nm = nelder_mead_n(x_bar*ones(n,1), F, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
        
 
-    % % Problem 14
+    % Problem 14
     x_bar2 = zeros(n,1);
     h = 1/(n+1);
     for i=1:n
@@ -90,7 +100,16 @@ for n = [10,25,50]
     [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
     simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
 
+    % Problema 1
+    x_bar3 = zeros(n,1);        
+    x_bar3(mod(1:n,2)==1) = -1.2; 
+    x_bar3(mod(1:n,2)==0) = 1.0; 
+    [F3, grad3, H3] = chained_rosenbrock(n,x_bar3);
+    simplex_nm3 = nelder_mead_n(x_bar3, F3, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+
+
     % Restituisco valore migliore di ogni simplesso
     simplex_nm(:,1)
     simplex_nm2(:,1)
+    simplex_nm3(:,1)
 end
