@@ -4,10 +4,10 @@ usare entrambi i punti di partenza per i test
 
 generalizzare per i valori diversi di n e d
 
-eventualmente usare hessiana sparsa quando generalizziamo a dim superiori
-
 usare i 10 starting points dei problemi
 
 controllare perche problema 1 newton torna vettore riga e problema 2 vettore colonna
 
 controllare che i risultati abbiano senso
+
+sistemare problema 1: l'errore spunta perche gli do un valore e non una funzione di x, perche nella altre lavoro con le f_i, qui no
