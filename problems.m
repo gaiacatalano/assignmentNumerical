@@ -43,21 +43,21 @@ for p=1:length(d)
 
 
     % % Problem 14
-    % x_bar2 = zeros(n,1);
-    % h = 1/(n+1);
-    % for i=1:n
-    %     x_bar2(i) = i*h*(1-i*h);
-    % end
-    % [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
-    % [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
-    %     modified_newton_bcktrck(x_bar2, F2, grad2 , H2, ...
-    %     kmax, tolgrad, c1, rho, btmax);
-    % x_newton2 = xk2;
+    x_bar2 = zeros(n,1);
+    h = 1/(n+1);
+    for i=1:n
+        x_bar2(i) = i*h*(1-i*h);
+    end
+    [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
+    [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
+        modified_newton_bcktrck(x_bar2, F2, grad2 , H2, ...
+        kmax, tolgrad, c1, rho, btmax);
+    x_newton2 = xk2;
 
 
     % Restituisco valori newton dei problemi
     x_newton
-    %x_newton2
+    x_newton2
 end
 
 % Ciclo for per valori di n adatti a Nelder-Mead
@@ -82,15 +82,15 @@ for n = [10,25,50]
        
 
     % % Problem 14
-    % x_bar2 = zeros(n,1);
-    % h = 1/(n+1);
-    % for i=1:n
-    %     x_bar2(i) = i*h*(1-i*h);
-    % end
-    % [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
-    % simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+    x_bar2 = zeros(n,1);
+    h = 1/(n+1);
+    for i=1:n
+        x_bar2(i) = i*h*(1-i*h);
+    end
+    [F2, grad2, H2] = discrete_boundary_value_problem(n,x_bar2);
+    simplex_nm2 = nelder_mead_n(x_bar2, F2, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
 
     % Restituisco valore migliore di ogni simplesso
     simplex_nm(:,1)
-    %simplex_nm2(:,1)
+    simplex_nm2(:,1)
 end

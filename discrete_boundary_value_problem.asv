@@ -1,6 +1,7 @@
 function[F, gradf, Hess] = discrete_boundary_value_problem(n, x_bar)
 
     grad = zeros(n,1);
+    %H = zeros(n,n);
     f = zeros(n,1);
     h = 1/(n+1);
 
@@ -48,19 +49,16 @@ function[F, gradf, Hess] = discrete_boundary_value_problem(n, x_bar)
         % H(k,k) = H(k,k) + 2 * (f(k) * (3*h^2 * (xk + k*h + 1)));
 
         if k > 1
-            d0(k) = d0(k) + df_dxkp1^2;
+            d0(k) = d0(k) + 
         end
-        d0(k) = d0(k) + 2*df_dxk^2 + 2*f(k)*(3*h^2 * (xk + k*h + 1));
+        d0(k) = d0(k) + 
         if k < n
-            d0(k) = d0(k) + df_dxkm1^2;
+            d0(k) = d0(k) + 
         end
 
-        dp1(k) = dp1(k) + 2*(df_dxk*df_dxkp1 + df_dxkm1*df_dxk);
-        dp2(k) = dp2(k) + 2*df_dxkp1^2;
+        dp1(k)
+        dp2(k)
     end
-
-    H = spdiags([dp2 dp1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
-    H = 0.5 * (H + H');
 
     F = @(x) sum(f.^2);
     gradf = @(x) grad;

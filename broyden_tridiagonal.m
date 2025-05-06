@@ -1,7 +1,6 @@
 function[F, gradf, Hess] = broyden_tridiagonal(n, x_bar)
 
     grad = zeros(n,1);
-    %H = zeros(n,n);
     f = zeros(n,1);
    
     d0 = zeros(n,1);
@@ -62,7 +61,7 @@ function[F, gradf, Hess] = broyden_tridiagonal(n, x_bar)
 
     H = spdiags([dp2 dp1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
     H = 0.5 * (H + H');
-    H
+    %H
     F = @(x) 0.5 * sum(f.^2);
     gradf = @(x) grad;
     Hess = @(x) H;
