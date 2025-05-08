@@ -2,14 +2,9 @@ function [xk, fk, gradfk_norm, k, xseq, btseq] = ...
     modified_newton_bcktrck(x0, f, gradf, Hessf, ...
     kmax, tolgrad, c1, rho, btmax)
 
-%
-% [xk, fk, gradfk_norm, k, xseq, btseq] = ...
-    % newton_bcktrck(x0, f, gradf, Hessf, ...
-    % kmax, tolgrad, c1, rho, btmax)
-%
 % Function that performs the Newton optimization method, using
 % backtracking strategy for the step-length selection.
-%
+
 % INPUTS:
 % x0 = n-dimensional column vector;
 % f = function handle that describes a function R^n->R;
@@ -22,7 +17,7 @@ function [xk, fk, gradfk_norm, k, xseq, btseq] = ...
 % rho = ﻿fixed factor, lesser than 1, used for reducing alpha0;
 % btmax = ﻿maximum number of steps for updating alpha during the 
 % backtracking strategy.
-%
+
 % OUTPUTS:
 % xk = the last x computed by the function;
 % fk = the value f(xk);
@@ -32,7 +27,7 @@ function [xk, fk, gradfk_norm, k, xseq, btseq] = ...
 % sequence
 % btseq = 1-by-k vector where elements are the number of backtracking
 % iterations at each optimization step.
-%
+
 
 % Function handle for the armijo condition
 farmijo = @(fk, alpha, c1_gradfk_pk) ...
@@ -53,28 +48,26 @@ delta = sqrt(eps);
 
 
 while k < kmax && gradfk_norm >= tolgrad
+
     if issparse(Hessfk)
+        if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
+            error('Hessiana contiene NaN o Inf alla iterazione %d', k);
+        end
         lambda_min = eigs(Hessfk, 1, 'SA');
     else
         lambda_min = min(eig(Hessfk));
     end
-    tau_k  =max(0, delta-lambda_min);
+    tau_k = max(0, delta-lambda_min);
     E_k = tau_k*speye(size(Hessfk,1));
     B_k = Hessfk + E_k;
     
-    % Compute the descent direction as solution of
-    % Hessf(xk) p = - gradf(xk)
-    %%%%%% L.S. SOLVED WITH BACKSLASH (NOT USED) %%%%%%%%%%
-    % pk = -Hessf(xk)\gradfk;
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%% L.S. SOLVED WITH pcg %%%%%%%%%%%%%%%%%%%%%%%%%%%
     % For simplicity: default values for tol and maxit; no preconditioning
     % pk = pcg(Hessf(xk), -gradfk);
     % If you want to silence the messages about "solution quality", use
     % instead: 
-    % [pk, flagk, relresk, iterk, resveck] = pcg(Hessf(xk), -gradfk);
+    %[pk, flagk, relresk, iterk, resveck] = pcg(Hessf(xk), -gradfk);
     [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk);
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % Reset the value of alpha
     alpha = 1;
