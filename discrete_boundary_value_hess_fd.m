@@ -25,7 +25,7 @@ function H = discrete_boundary_value_hess_fd(x, hstep)
         % Perturb negatively
         xm = x;
         xm(i) = xm(i) - hstep;
-        gm = grad_fd_discrete_bvp(xm, h);
+        gm = discrete_boundary_value_grad_fd(xm, h);
 
         % Approximate column j of the Hessian
         H(:,i) = (gp - gm) / (2 * hstep);

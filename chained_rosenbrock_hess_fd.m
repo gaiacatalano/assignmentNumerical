@@ -14,7 +14,7 @@ function H = chained_rosenbrock_hess_fd(x, hstep)
 
         xm = x;
         xm(i) = xm(i) - hstep;
-        gm = grad_fd_chained_rosenbrock(xm);
+        gm = chained_rosenbrock_grad_fd(xm);
 
         % Central difference approximation of ∂grad/∂x_j
         H(:, i) = (gp - gm) / (2 * hstep);

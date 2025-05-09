@@ -19,9 +19,15 @@ chained_rosenbrock_fun = @chained_rosenbrock_fvalue;
 chained_rosenbrock_grad = @chained_rosenbrock_grad;
 chained_rosenbrock_hess = @chained_rosenbrock_hess;
 
+chained_rosenbrock_grad_fd = @chained_rosenbrock_grad_fd;
+chained_rosenbrock_hess_fd = @chained_rosenbrock_hess_fd;
+
 discrete_boundary_value_fun = @discrete_boundary_value_fvalue;
 discrete_boundary_value_grad = @discrete_boundary_value_grad;
 discrete_boundary_value_hess = @discrete_boundary_value_hess;
+
+discrete_boundary_value_grad_fd = @discrete_boundary_value_grad_fd;
+discrete_boundary_value_hess_fd = @discrete_boundary_value_hess_fd;
 
 % broyden_tridiagonal_fun = @broyden_tridiagonal_fvalue;
 % broyden_tridiagonal_grad = @broyden_tridiagonal_grad;
@@ -30,6 +36,10 @@ discrete_boundary_value_hess = @discrete_boundary_value_hess;
 problem_213_fun = @problem_213_fvalue;
 problem_213_grad = @problem_213_grad;
 problem_213_hess = @problem_213_hess;
+
+problem_213_grad_fd = @problem_213_grad_fd;
+problem_213_hess_fd = @problem_213_hess_fd;
+
     
 % Ciclo for per valori di n adatti a Newton
 for p=1:length(d)
@@ -66,6 +76,12 @@ for p=1:length(d)
         modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
         chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
     x_newton_chained_rosenbrock = xk;
+
+    % [xk_fd, fk_fd, gradfk_norm_fd, k_fd, xseq_fd, btseq_fd] = ...
+    %     modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad_fd , ...
+    %     chained_rosenbrock_hess_fd, kmax, tolgrad, c1, rho, btmax);
+    % x_newton_chained_rosenbrock_fd = xk_fd;
+
     disp('Sto stampando risultati per Chained')
 
 
@@ -81,6 +97,13 @@ for p=1:length(d)
         discrete_boundary_value_grad , discrete_boundary_value_hess, ...
         kmax, tolgrad, c1, rho, btmax);
     x_newton_discrete_boundary_value = xk2;
+
+    % [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
+    %     modified_newton_bcktrck(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
+    %     discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
+    %     kmax, tolgrad, c1, rho, btmax);
+    % x_newton_discrete_boundary_value_fd = xk2_fd;
+    
     disp('Sto stampando risultati per Discrete')
 
 
@@ -101,6 +124,13 @@ for p=1:length(d)
         problem_213_grad , problem_213_hess, ...
         kmax, tolgrad, c1, rho, btmax);
     x_newton_problem_213 = xk3;
+
+    % [xk3_fd, fk3_fd, gradfk_norm3_fd, k3_fd, xseq3_fd, btseq3_fd] = ...
+    %     modified_newton_bcktrck(x_bar_problem_213, problem_213_fun, ...
+    %     problem_213_grad_fd , problem_213_hess_fd, ...
+    %     kmax, tolgrad, c1, rho, btmax);
+    % x_newton_problem_213_fd = xk3_fd;
+
     disp('Sto stampando risultati per Problem 213')
 
 
