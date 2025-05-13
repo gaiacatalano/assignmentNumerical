@@ -21,6 +21,7 @@ function H = problem_213_hess_fd(x, hstep)
         % Perturbazione positiva
         xp = x;
         xp(i) = xp(i) + hstep;
+        
         gp = problem_213_grad_fd(xp, hstep);
 
         % Perturbazione negativa
