@@ -13,23 +13,39 @@ function H = discrete_boundary_value_hess_fd(x, hstep)
     end
 
     n = length(x);
-    H = sparse(n, n);
+    %H = sparse(n, n);
+    x_ext = [0; x; 0];
     h = 1 / (n + 1);
+    d0 = zeros(n,1);
+    d1 = zeros(n,1);
+    d2 = zeros(n,1);
 
     for i = 1:n
-        % Perturb positively
-        xp = x;
-        xp(i) = xp(i) + hstep;
-        gp = discrete_boundary_value_grad_fd(xp, h);
+        xim1 = x_ext(i);
+        xi = x_ext(i+1);
+        xip1 = x_ext(i+2);
 
-        % Perturb negatively
-        xm = x;
-        xm(i) = xm(i) - hstep;
-        gm = discrete_boundary_value_grad_fd(xm, h);
+        if i > 1
+            d0(i) = d0(i) + 2;
+        end
 
-        % Approximate column j of the Hessian
-        H(:,i) = (gp - gm) / (2 * hstep);
+        fi = 2*xi - xim1 - xip1 + (h^2 / 2)*(xi + i*h + 1)^3;
+        d0(i) = d0(i) + 2*(2+((h*hstep)^2)/2)^2 + 6*fi*(h^2)*(xi+i*h + 1) + ((9*h^4)/2)*((xi+i*h + 1)^2 + hstep^2) + 6*(h^2)*(2+((h^2)/2)*hstep^2)*(xi + i*h+1)^2;
+
+        if i < n
+            %xip2 = x_ext(i+3);
+            %fip1 = 2*xip1 - xi - xip2 + (h^2 / 2)*(xip1 + (i+1)*h + 1)^3;
+            d0(i) = d0(i) + 2;
+            d1(i) = d1(i) -3*(h^2)*(xi+i*h+1)*((xi+i*h+1)+hstep)-(h*hstep)^2 -4 -(h*hstep)^2 - 3*(h^2)*(xip1+(i+1)*h+1)*((xip1+(i+1)*h+1)+hstep);
+        end 
+
+        if i < n-1
+            d2(i) = 2;
+        end
+
     end
+
+    H = spdiags([d2 d1 d0 d1 d2], [-2 -1 0 -1 -2], n, n);
 
     % Enforce symmetry
     H = 0.5 * (H + H');
