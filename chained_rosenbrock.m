@@ -40,7 +40,6 @@ problem_213_hess = @problem_213_hess;
 problem_213_grad_fd = @problem_213_grad_fd;
 problem_213_hess_fd = @problem_213_hess_fd;
 
-    
 % Ciclo for per valori di n adatti a Newton
 for p=1:length(d)
 
@@ -77,6 +76,12 @@ for p=1:length(d)
         chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
     x_newton_chained_rosenbrock = xk;
 
+
+    [xk, fk, gradfk_norm, k, xseq, btseq] = ...
+        modified_newton_bcktrck_preconditioning(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
+        chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
+    x_newton_chained_rosenbrock_prec = xk;
+
     % [xk_fd, fk_fd, gradfk_norm_fd, k_fd, xseq_fd, btseq_fd] = ...
     %     modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad_fd , ...
     %     chained_rosenbrock_hess_fd, kmax, tolgrad, c1, rho, btmax);
@@ -97,6 +102,12 @@ for p=1:length(d)
         discrete_boundary_value_grad , discrete_boundary_value_hess, ...
         kmax, tolgrad, c1, rho, btmax);
     x_newton_discrete_boundary_value = xk2;
+
+    [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
+        modified_newton_bcktrck_preconditioning(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
+        discrete_boundary_value_grad , discrete_boundary_value_hess, ...
+        kmax, tolgrad, c1, rho, btmax);
+    x_newton_discrete_boundary_value_prec = xk2;
 
     % [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
     %     modified_newton_bcktrck(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
@@ -124,6 +135,12 @@ for p=1:length(d)
         problem_213_grad , problem_213_hess, ...
         kmax, tolgrad, c1, rho, btmax);
     x_newton_problem_213 = xk3;
+
+    [xk3, fk3, gradfk_norm3, k3, xseq3, btseq3] = ...
+        modified_newton_bcktrck_preconditioning(x_bar_problem_213, problem_213_fun, ...
+        problem_213_grad , problem_213_hess, ...
+        kmax, tolgrad, c1, rho, btmax);
+    x_newton_problem_213_prec = xk3;
 
     % [xk3_fd, fk3_fd, gradfk_norm3_fd, k3_fd, xseq3_fd, btseq3_fd] = ...
     %     modified_newton_bcktrck(x_bar_problem_213, problem_213_fun, ...
@@ -191,6 +208,7 @@ for n = [10,25,50]
     % Restituisco valore migliore di ogni simplesso
     simplex_chianed_rosenbrock = simplex_chained_rosenbrock(:,1);
     simplex_discrete_boundary_value = simplex_discrete_boundary_value(:,1);
+    simplex_problem_213 = simplex_problem_213(:,1);
     % simplex_broyden_tridiagonal = simplex_broyden_tridiagonal(:,1);
 end
 

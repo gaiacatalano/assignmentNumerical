@@ -1,0 +1,142 @@
+clc
+clear
+close all
+
+% Aggiungo quello che sta nella cartella fuori al path
+addpath('../'); 
+
+% Seed
+rng(349131);
+
+% Dimension
+d = 3:1:5; 
+num_points = 10;
+
+% Stopping parameters
+tol = 1e-5;
+kmax = 200;
+
+% Chiamo le funzioni
+
+chained_rosenbrock_fun = @chained_rosenbrock_fvalue;
+chained_rosenbrock_grad = @chained_rosenbrock_grad;
+chained_rosenbrock_hess = @chained_rosenbrock_hess;
+
+chained_rosenbrock_grad_fd = @chained_rosenbrock_grad_fd;
+chained_rosenbrock_hess_fd = @chained_rosenbrock_hess_fd;
+    
+% ======================= MODIFIED NEWTON ===========================
+
+for p=1:length(d)
+
+    fprintf('Sto stampando risultati per p = %d\n', p);
+
+    n = 10^d(p);
+
+    % Backtracking parameters
+    rho = 0.5;
+    c = 10e-4;
+
+    % Newton parameters
+    tolgrad = 1e-5;
+    c1 = 1e-8;
+    btmax = 20;
+
+    % con il mio x_bar
+    x_bar_chained_rosenbrock = zeros(n,1);         
+    for i = 1:n
+        if mod(i, 2) == 1
+            x_bar_chained_rosenbrock(i) = -1.2;
+        else
+            x_bar_chained_rosenbrock(i) = 1.0;
+        end
+    end 
+
+    [xk, fk, gradfk_norm, k, xseq, btseq] = ...
+        modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
+        chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
+    x_newton_chained_rosenbrock = xk;
+
+    [xk_prec, fk_prec, gradfk_norm_prec, k_prec, xseq_prec, btseq_prec] = ...
+        modified_newton_bcktrck_preconditioning(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
+        chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
+    x_newton_chained_rosenbrock_prec = xk;
+
+    % [xk_fd, fk_fd, gradfk_norm_fd, k_fd, xseq_fd, btseq_fd] = ...
+    %     modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad_fd , ...
+    %     chained_rosenbrock_hess_fd, kmax, tolgrad, c1, rho, btmax);
+    % x_newton_chained_rosenbrock_fd = xk_fd;
+
+    fprintf("n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk, k, gradfk_norm);
+    fprintf("n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk_prec, k_prec, gradfk_norm_prec);
+    
+    % con i 10 punti generati uniformemente in un ipercubo
+    for i = 1:num_points
+        x0_i = x_bar_chained_rosenbrock + 2 * rand(n,1) - 1;
+
+    [xk, fk, gradfk_norm, k, xseq, btseq] = ...
+        modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
+        chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
+    x_newton_chained_rosenbrock = xk;
+
+    [xk_prec, fk_prec, gradfk_norm_prec, k_prec, xseq_prec, btseq_prec] = ...
+        modified_newton_bcktrck_preconditioning(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
+        chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
+    x_newton_chained_rosenbrock_prec = xk;
+
+        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            n, i, fk, k, gradfk_norm);
+        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            n, i, fk_prec, k_prec, gradfk_norm_prec);
+
+    end
+
+end
+
+
+% ======================= NELDER-MEAD ===========================
+
+for n = [10,25,50]
+
+    % Nelder-Mead parameters
+    rho_nm = 1;
+    chi_nm = 2;
+    gamma_nm = 0.5;
+    sigma_nm = 0.5;
+
+    fprintf('Sto stampando risultati per n = %d\n', n);
+
+    % con il mio x_bar
+    x_bar_chained_rosenbrock = zeros(n,1);        
+    for i = 1:n
+        if mod(i, 2) == 1
+            x_bar_chained_rosenbrock(i) = -1.2;
+        else
+            x_bar_chained_rosenbrock(i) = 1.0;
+        end
+    end 
+
+    simplex_chained_rosenbrock = nelder_mead_n(x_bar_chained_rosenbrock, chained_rosenbrock_fun, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+
+    % Restituisco valore migliore di ogni simplesso
+    simplex_chianed_rosenbrock = simplex_chained_rosenbrock(:,1);
+
+    fprintf("Nelder-Mead | n = %d | #%d | f(x) = %.4e\n", n, i, chained_rosenbrock_fun(simplex_chianed_rosenbrock));
+    
+    for i = 1:num_points
+
+        x0_i = x_bar_chained_rosenbrock + 2 * rand(n,1) - 1;
+    
+        simplex_i = nelder_mead_n(x0_i, chained_rosenbrock_fun, n , ...
+            rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+    
+        x_best_i = simplex_i(:,1);
+    
+        fprintf("Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, chained_rosenbrock_fun(x_best_i));
+
+     end
+    
+end
+
+
+

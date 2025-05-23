@@ -1,33 +1,9 @@
 function [xk, fk, gradfk_norm, k, xseq, btseq] = ...
-    modified_newton_bcktrck(x0, f, gradf, Hessf, ...
-    kmax, tolgrad, c1, rho, btmax, hstep)
+    modified_newton_bcktrck_preconditioning(x0, f, gradf, Hessf, ...
+    kmax, tolgrad, c1, rho, btmax)
 
 % Function that performs the Newton optimization method, using
 % backtracking strategy for the step-length selection.
-
-% INPUTS:
-% x0 = n-dimensional column vector;
-% f = function handle that describes a function R^n->R;
-% gradf = function handle that describes the gradient of f;
-% Hessf = function handle that describes the Hessian of f;
-% kmax = maximum number of iterations permitted;
-% tolgrad = value used as stopping criterion w.r.t. the norm of the
-% gradient;
-% c1 = ﻿the factor of the Armijo condition that must be a scalar in (0,1);
-% rho = ﻿fixed factor, lesser than 1, used for reducing alpha0;
-% btmax = ﻿maximum number of steps for updating alpha during the 
-% backtracking strategy.
-
-% OUTPUTS:
-% xk = the last x computed by the function;
-% fk = the value f(xk);
-% gradfk_norm = value of the norm of gradf(xk)
-% k = index of the last iteration performed
-% xseq = n-by-k matrix where the columns are the elements xk of the 
-% sequence
-% btseq = 1-by-k vector where elements are the number of backtracking
-% iterations at each optimization step.
-
 
 % Function handle for the armijo condition
 farmijo = @(fk, alpha, c1_gradfk_pk) ...
@@ -39,11 +15,7 @@ btseq = zeros(1, kmax);
 
 xk = x0;
 fk = f(xk);
-if nargin == 9
-    gradfk = gradf(xk);
-else
-    gradfk = gradf(xk, hstep);
-end
+gradfk = gradf(xk);
 k = 0;
 gradfk_norm = norm(gradfk);
 Hessfk = Hessf(xk);
@@ -65,13 +37,10 @@ while k < kmax && gradfk_norm >= tolgrad
     E_k = tau_k*speye(size(Hessfk,1));
     B_k = Hessfk + E_k;
     
-    %%%%%% L.S. SOLVED WITH pcg %%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % For simplicity: default values for tol and maxit; no preconditioning
-    % pk = pcg(Hessf(xk), -gradfk);
-    % If you want to silence the messages about "solution quality", use
-    % instead: 
-    %[pk, flagk, relresk, iterk, resveck] = pcg(Hessf(xk), -gradfk);
-    [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk);
+    % solved with pcg with preconditioning, con B_k=LL' incomplete Choleski
+    L = ichol(B_k);
+    [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk, [], [], L, L');
+
     
     % Reset the value of alpha
     alpha = 1;
@@ -82,6 +51,7 @@ while k < kmax && gradfk_norm >= tolgrad
     fnew = f(xnew);
     
     c1_gradfk_pk = c1 * gradfk' * pk;
+
     bt = 0;
     % Backtracking strategy: 
     % 2nd condition is the Armijo condition not satisfied
