@@ -80,6 +80,7 @@ for p=1:length(d)
 
     % con i 10 punti generati uniformemente in un ipercubo
     for i = 1:num_points
+
         x0_i = x_bar_discrete_boundary_value + 2 * rand(n,1) - 1;
 
         [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
@@ -156,7 +157,8 @@ for n = [10,25,50]
     
         fprintf("Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, discrete_boundary_value_fun(x_best_i));
 
-     end
+    end
+    
 end
 
 

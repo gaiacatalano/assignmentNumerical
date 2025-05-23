@@ -77,6 +77,7 @@ for p=1:length(d)
     
     % con i 10 punti generati uniformemente in un ipercubo
     for i = 1:num_points
+        
         x0_i = x_bar_problem_213 + 2 * rand(n,1) - 1;
 
         % Newton classico

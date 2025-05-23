@@ -80,6 +80,7 @@ for p=1:length(d)
 
     % con i 10 punti generati uniformemente in un ipercubo
     for i = 1:num_points
+        
         x0_i = x_bar_chained_rosenbrock + 2 * rand(n,1) - 1;
 
         [xk, fk, gradfk_norm, k, xseq, btseq] = ...
@@ -102,8 +103,6 @@ for p=1:length(d)
             chained_rosenbrock_hess_fd, kmax, tolgrad, c1, rho, btmax);
         x_newton_chained_rosenbrock_fd_prec = xk_fd_prec;
 
-
-
         fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk, k, gradfk_norm);
         fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
@@ -112,7 +111,6 @@ for p=1:length(d)
             n, i, fk_fd, k_fd, gradfk_norm_fd);
         fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk_fd_prec, k_fd_prec, gradfk_norm_fd_prec);
-
 
     end
 
