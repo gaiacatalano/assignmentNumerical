@@ -27,6 +27,7 @@ chained_rosenbrock_hess_fd = @chained_rosenbrock_hess_fd;
     
 % ======================= MODIFIED NEWTON ===========================
 
+tic;
 for p=1:length(d)
 
     fprintf('Sto stampando risultati per p = %d\n', p);
@@ -80,7 +81,7 @@ for p=1:length(d)
 
     % con i 10 punti generati uniformemente in un ipercubo
     for i = 1:num_points
-        
+
         x0_i = x_bar_chained_rosenbrock + 2 * rand(n,1) - 1;
 
         [xk, fk, gradfk_norm, k, xseq, btseq] = ...
@@ -115,10 +116,12 @@ for p=1:length(d)
     end
 
 end
-
+tempoNewton = toc; 
+disp(['Tempo trascorso: ', num2str(tempoNewton), ' secondi']);
 
 % ======================= NELDER-MEAD ===========================
 
+tic;
 for n = [10,25,50]
 
     % Nelder-Mead parameters
@@ -160,6 +163,8 @@ for n = [10,25,50]
      end
     
 end
+tempoNM = toc;
+disp(['Tempo trascorso: ', num2str(tempoNM), ' secondi']);
 
 
 

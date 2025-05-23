@@ -27,6 +27,7 @@ discrete_boundary_value_hess_fd = @discrete_boundary_value_hess_fd;
     
 % ======================= MODIFIED NEWTON ===========================
 
+tic;
 for p=1:length(d)
 
     fprintf('Sto stampando risultati per p = %d\n', p);
@@ -118,10 +119,12 @@ for p=1:length(d)
 
     end
 end
-
+tempoNewton = toc; 
+disp(['Tempo trascorso: ', num2str(tempoNewton), ' secondi']);
 
 % ======================= NELDER-MEAD ===========================
 
+tic;
 for n = [10,25,50]
 
     % Nelder-Mead parameters
@@ -160,6 +163,7 @@ for n = [10,25,50]
     end
     
 end
-
+tempoNM = toc;
+disp(['Tempo trascorso: ', num2str(tempoNM), ' secondi']);
 
 
