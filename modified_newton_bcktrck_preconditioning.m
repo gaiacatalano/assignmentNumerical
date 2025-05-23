@@ -37,9 +37,16 @@ while k < kmax && gradfk_norm >= tolgrad
     E_k = tau_k*speye(size(Hessfk,1));
     B_k = Hessfk + E_k;
     
-    % solved with pcg with preconditioning, con B_k=LL' incomplete Choleski
-    L = ichol(B_k);
-    [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk, [], [], L, L');
+    % % solved with pcg with preconditioning, con B_k=LL' incomplete Choleski
+    % L = ichol(B_k);
+    % [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk, [], [], L, L');
+
+    % solved with pcg with diagonal preconditioning
+    M_diag = diag(B_k);
+    M_diag(M_diag <= 0) = 1;  % evita divisioni per zero o valori negativi
+    n = length(xk);
+    M = spdiags(M_diag, 0, n, n);
+    [pk, ~] = pcg(B_k, -gradfk, 1e-6, kmax, M);
 
     
     % Reset the value of alpha
