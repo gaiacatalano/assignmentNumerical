@@ -1,0 +1,9 @@
+n = 1000
+Tempo di esecuzione Modified Newton: 0.7238
+f(x) = 9.8944e+02 | iter = 200 | norm grad = 1.06e+00
+Tempo di esecuzione Modified Newton con precondizionamento: 1.2347
+f(x) = 9.8938e+02 | iter = 200 | norm grad = 1.22e+00
+Tempo di esecuzione Modified Newton con differenze finite: 0.6391
+f(x) = 9.8957e+02 | iter = 200 | norm grad = 4.80e-01
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 0.8137
+f(x) = 9.8957e+02 | iter = 200 | norm grad = 4.80e-01

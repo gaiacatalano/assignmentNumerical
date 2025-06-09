@@ -34,7 +34,7 @@ function hess = problem_213_hess(x)
         end
         
         if k < n
-            dp1(k) = dp1(k) + df_dxk*df_dxkp1 + df_dxkm1*df_dxk;
+            dp1(k) = dp1(k) + df_dxk*df_dxkp1 + df_dxkm1*df_dxk;  % riguarda
         end
         if k < n-1
             dp2(k) = dp2(k) + df_dxkp1^2;

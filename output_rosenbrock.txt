@@ -1,0 +1,2 @@
+Tempo di esecuzione Nelder mead 3.530970e-02
+Tempo di esecuzione Modified Newton 1.408998e-01

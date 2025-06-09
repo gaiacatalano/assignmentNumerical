@@ -24,6 +24,8 @@ discrete_boundary_value_hess = @discrete_boundary_value_hess;
 
 discrete_boundary_value_grad_fd = @discrete_boundary_value_grad_fd;
 discrete_boundary_value_hess_fd = @discrete_boundary_value_hess_fd;
+
+fid = fopen('output_discrete_boundary.txt', 'w');
     
 % ======================= MODIFIED NEWTON ===========================
 
@@ -160,6 +162,8 @@ for n = [10,25,50]
     end
     
 end
+
+fclose(fid);
 
 
 

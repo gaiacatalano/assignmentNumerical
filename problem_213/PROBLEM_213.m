@@ -25,6 +25,7 @@ problem_213_hess = @problem_213_hess;
 problem_213_grad_fd = @problem_213_grad_fd;
 problem_213_hess_fd = @problem_213_hess_fd;
 
+fid = fopen('output_problem_213.txt', 'w');
 
 % ======================= MODIFIED NEWTON ===========================
 
@@ -152,6 +153,8 @@ for n = [10,25,50]
     end
     
 end
+
+fclose(fid);
 
 
 
