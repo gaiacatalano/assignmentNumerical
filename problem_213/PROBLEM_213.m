@@ -34,6 +34,7 @@ for p=1:length(d)
     fprintf('Sto stampando risultati per p = %d\n', p);
 
     n = 10^d(p);
+    fprintf(fid, "n = %d\n", n);
 
     % Backtracking parameters
     rho = 0.5;
@@ -46,36 +47,48 @@ for p=1:length(d)
 
     % con il mio x_bar
     x_bar_problem_213 = ones(n,1);
-
+    
+    tic;
     [xk3, fk3, gradfk_norm3, k3, xseq3, btseq3] = ...
         modified_newton_bcktrck(x_bar_problem_213, problem_213_fun, ...
         problem_213_grad , problem_213_hess, ...
         kmax, tolgrad, c1, rho, btmax);
+    tempo_mn = toc;
     x_newton_problem_213 = xk3;
-
+    
+    tic;
     [xk3_prec, fk3_prec, gradfk_norm3_prec, k3_prec, xseq3_prec, btseq3_prec] = ...
         modified_newton_bcktrck_preconditioning(x_bar_problem_213, problem_213_fun, ...
         problem_213_grad , problem_213_hess, ...
         kmax, tolgrad, c1, rho, btmax);
+    tempo_mn_prec = toc;
     x_newton_problem_213_prec = xk3_prec;
 
+    tic;
     [xk3_fd, fk3_fd, gradfk_norm3_fd, k3_fd, xseq3_fd, btseq3_fd] = ...
         modified_newton_bcktrck(x_bar_problem_213, problem_213_fun, ...
         problem_213_grad_fd , problem_213_hess_fd, ...
         kmax, tolgrad, c1, rho, btmax);
+    tempo_mn_fd = toc;
     x_newton_problem_213_fd = xk3_fd;
 
+    tic;
     [xk3_fd_prec, fk3_fd_prec, gradfk_norm3_fd_prec, k3_fd_prec, xseq3_fd_prec, btseq3_fd_prec] = ...
         modified_newton_bcktrck_preconditioning(x_bar_problem_213, problem_213_fun, ...
         problem_213_grad_fd , problem_213_hess_fd, ...
         kmax, tolgrad, c1, rho, btmax);
+    tempo_mn_fd_prec = toc;
     x_newton_problem_213_fd_prec = xk3_fd_prec;
-
-    fprintf("n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk3, k3, gradfk_norm3);
-    fprintf("n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk3_prec, k3_prec, gradfk_norm3_prec);
-    fprintf("n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk3_fd, k3_fd, gradfk_norm3_fd);
-    fprintf("n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk3_fd_prec, k3_fd_prec, gradfk_norm3_fd_prec);
     
+    fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
+    fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk3, k3, gradfk_norm3);
+    fprintf(fid, "Tempo di esecuzione Modified Newton con precondizionamento: %.4f\n", tempo_mn_prec);
+    fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk3_prec, k3_prec, gradfk_norm3_prec);
+    fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite: %.4f\n", tempo_mn_fd);
+    fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk3_fd, k3_fd, gradfk_norm3_fd);
+    fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: %.4f\n", tempo_mn_fd_prec);
+    fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk3_fd_prec, k3_fd_prec, gradfk_norm3_fd_prec);
+
     % con i 10 punti generati uniformemente in un ipercubo
     for i = 1:num_points
         
@@ -134,12 +147,14 @@ for n = [10,25,50]
     % con il mio x_bar
     x_bar_problem_213 = ones(n,1);
 
+    tic;
     simplex_problem_213 = nelder_mead_n(x_bar_problem_213, problem_213_fun, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
-
+    tempo_nelder_mead = toc; 
     % Restituisco valore migliore del simplesso
     simplex_problem_213 = simplex_problem_213(:,1);
 
-    fprintf("Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, problem_213_fun(simplex_problem_213));
+    fprintf(fid, "Tempo di esecuzione Nelder Mead: %.4f\n", tempo_nelder_mead);
+    fprintf(fid, "Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, problem_213_fun(simplex_problem_213));
 
     for i = 1:num_points
         x0_i = x_bar_problem_213 + 2 * rand(n,1) - 1;

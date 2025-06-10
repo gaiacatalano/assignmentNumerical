@@ -154,22 +154,25 @@ for n = [10,25,50]
         end
     end 
 
+    tic;
     simplex_chained_rosenbrock = nelder_mead_n(x_bar_chained_rosenbrock, chained_rosenbrock_fun, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+    tempo_nelder_mead = toc;
 
     % Restituisco valore migliore di ogni simplesso
     simplex_chianed_rosenbrock = simplex_chained_rosenbrock(:,1);
 
+    fprintf(fid, "Tempo di esecuzione Nelder Mead: %.4f\n", tempo_nelder_mead);
     fprintf("Nelder-Mead | n = %d | #%d | f(x) = %.4e\n", n, i, chained_rosenbrock_fun(simplex_chianed_rosenbrock));
     
     for i = 1:num_points
 
         x0_i = x_bar_chained_rosenbrock + 2 * rand(n,1) - 1;
-    
+        
         simplex_i = nelder_mead_n(x0_i, chained_rosenbrock_fun, n , ...
             rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
     
         x_best_i = simplex_i(:,1);
-    
+
         fprintf("Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, chained_rosenbrock_fun(x_best_i));
 
      end
