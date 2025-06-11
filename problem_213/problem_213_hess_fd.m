@@ -7,12 +7,14 @@ function H = problem_213_hess_fd(x, hstep)
     end
 
     n = length(x);
-    H = sparse(n,n);  % la Hessiana è sparsa
+    %H = sparse(n,n);  % la Hessiana è sparsa
     h = 1 / (n + 1);
 
     d0 = zeros(n,1);
-    d1 = zeros(n,1);
-    d2 = zeros(n,1);
+    dp1 = zeros(n,1);
+    dm1 = zeros(n,1);
+    dp2 = zeros(n,1);
+    dm2 = zeros(n,1);
 
     % Estendi x con condizioni al contorno
     x_ext = [0; x; 1];
@@ -34,17 +36,22 @@ function H = problem_213_hess_fd(x, hstep)
 
         if i < n
             d0(i) = d0(i) + 2;
-            d1(i) = d1(i) +  (-2*(h^2)/hstep)*(hstep +sin(xi + hstep)-sin(xi)) -4 - (-2*(h^2)/hstep)*(hstep+sin(xip1 + hstep)-sin(xip1));    %forse sommarlo non serve, lo riempio una volta sola
+            dm1(i) = dm1(i) +  (-2*(h^2)/hstep)*(hstep +sin(xi + hstep)-sin(xi)) -4 - (-2*(h^2)/hstep)*(hstep+sin(xip1 + hstep)-sin(xip1));    %forse sommarlo non serve, lo riempio una volta sola
+            dp1(i+1) = dp1(i+1) +  (-2*(h^2)/hstep)*(hstep +sin(xi + hstep)-sin(xi)) -4 - (-2*(h^2)/hstep)*(hstep+sin(xip1 + hstep)-sin(xip1));    %forse sommarlo non serve, lo riempio una volta sola
         end
 
         if i < n-1
-            d2(i) = 2;
+            dm2(i) = 2;
+            dp2(i+2) = 2;
+
         end
 
     end
 
-    H = spdiags([d2 d1 d0 d1 d2], [-2 -1 0 -1 -2], n, n);
+    H = spdiags([dm2 dm1 d0 dp1 dp2], [-2 -1 0 -1 -2], n, n);
 
     % Simmetrizza per sicurezza
     H = 0.5 * (H + H');
+    any(isnan(H(:))) || any(isinf(H(:)))
+
 end

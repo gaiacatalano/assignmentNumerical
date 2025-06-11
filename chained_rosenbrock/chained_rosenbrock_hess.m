@@ -17,7 +17,7 @@ function hess = chained_rosenbrock_hess(x)
 
         d0(i-1) = d0(i-1) + d2f_dxim12;
         d0(i)   = d0(i)   + d2f_dxi2;
-        dp1(i-1) = d2f_dxim1xi;
+        dp1(i) = d2f_dxim1xi;
         dm1(i-1) = d2f_dxim1xi;
 
     end

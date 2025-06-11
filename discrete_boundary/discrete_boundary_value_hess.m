@@ -10,6 +10,8 @@ function hess = discrete_boundary_value_hess(x)
     d0 = zeros(n,1);
     dp1 = zeros(n,1);
     dp2 = zeros(n,1);
+    dm1 = zeros(n,1);
+    dm2 = zeros(n,1);
 
     for k=1:n
 
@@ -26,23 +28,26 @@ function hess = discrete_boundary_value_hess(x)
         d2f_dxdk2 = 3*h^2 * (xk + k*h + 1);
 
         if k > 1
-            d0(k) = d0(k) + df_dxkp1^2;
+            d0(k) = d0(k) + df_dxkp1^2;            
         end
         d0(k) = d0(k) + 2*df_dxk^2 + 2*fk*d2f_dxdk2;
         if k < n
             d0(k) = d0(k) + df_dxkm1^2;
         end
+
         
         if k < n
-            dp1(k) = dp1(k) + 2*(df_dxk*df_dxkp1 + df_dxkm1*df_dxk);
+            dm1(k) = dm1(k) + 2*(df_dxk*df_dxkp1 + df_dxkm1*df_dxk);
+            dp1(k+1) = dp1(k+1) + 2*(df_dxk*df_dxkp1 + df_dxkm1*df_dxk);
         end
         if k < n-1
-            dp2(k) = dp2(k) + 2*df_dxkp1^2;
+            dm2(k) = dm2(k) + 2*df_dxkp1^2;
+            dp2(k+2) = dp2(k+2) + 2*df_dxkp1^2;
         end
 
     end
 
-    hess = spdiags([dp2 dp1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
+    hess = spdiags([dm2 dm1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
     hess = 0.5 * (hess + hess');
 
 end

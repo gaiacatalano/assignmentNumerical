@@ -10,6 +10,8 @@ function hess = problem_213_hess(x)
     d0 = zeros(n,1);
     dp1 = zeros(n,1);
     dp2 = zeros(n,1);
+    dm1 = zeros(n,1);
+    dm2 = zeros(n,1);
 
     for k=1:n
 
@@ -34,15 +36,17 @@ function hess = problem_213_hess(x)
         end
         
         if k < n
-            dp1(k) = dp1(k) + df_dxk*df_dxkp1 + df_dxkm1*df_dxk;  % riguarda
+            dm1(k) = dm1(k) + df_dxk*df_dxkp1 + df_dxkm1*df_dxk;  % riguarda
+            dp1(k+1) = dp1(k+1) + df_dxk*df_dxkp1 + df_dxkm1*df_dxk;
         end
         if k < n-1
-            dp2(k) = dp2(k) + df_dxkp1^2;
+            dm2(k) = dm2(k) + df_dxkp1^2;
+            dp2(k+2) = dp2(k+2) + df_dxkp1^2;
         end
 
     end
 
-    hess = spdiags([dp2 dp1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
+    hess = spdiags([dm2 dm1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
     hess = 0.5 * (hess + hess');
-
+    
 end

@@ -52,7 +52,7 @@ delta = sqrt(eps);
 
 
 while k < kmax && gradfk_norm >= tolgrad
-
+    c = condest(Hessfk)
     if issparse(Hessfk)
         if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
             error('Hessiana contiene NaN o Inf alla iterazione %d', k);
