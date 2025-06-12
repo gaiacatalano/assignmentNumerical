@@ -1,1 +1,3 @@
-n = 1000
+Tempo di esecuzione Nelder Mead: 0.1122
+Tempo di esecuzione Nelder Mead: 0.0293
+Tempo di esecuzione Nelder Mead: 0.0715

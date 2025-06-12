@@ -13,7 +13,7 @@ d = 3:1:5;
 num_points = 10;
 
 % Stopping parameters
-tol = 1e-5;
+tol = 1e-3;
 kmax = 200;
 
 % Chiamo le funzioni
@@ -28,7 +28,6 @@ discrete_boundary_value_hess_fd = @discrete_boundary_value_hess_fd;
 fid = fopen('output_discrete_boundary.txt', 'w');
     
 % ======================= MODIFIED NEWTON ===========================
-
 for p=1:length(d)
 
     fprintf('Sto stampando risultati per p = %d\n', p);
@@ -37,12 +36,12 @@ for p=1:length(d)
     fprintf(fid, "n = %d\n", n);
 
     % Backtracking parameters
-    rho = 0.5;
-    c = 10e-4;
+    rho = 0.8;
+    c = 1e-4;
 
     % Newton parameters
-    tolgrad = 1e-5;
-    c1 = 1e-8;
+    tolgrad = 1e-3;
+    c1 = 1e-3;
     btmax = 20;
 
     % con il mio x_bar
@@ -52,13 +51,13 @@ for p=1:length(d)
         x_bar_discrete_boundary_value(i) = i*h*(1-i*h);
     end
 
-    tic;
-    [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
-        modified_newton_bcktrck(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
-        discrete_boundary_value_grad , discrete_boundary_value_hess, ...
-        kmax, tolgrad, c1, rho, btmax);
-    tempo_mn = toc;
-    x_newton_discrete_boundary_value = xk2;
+    % tic;
+    % [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
+    %     modified_newton_bcktrck(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
+    %     discrete_boundary_value_grad , discrete_boundary_value_hess, ...
+    %     kmax, tolgrad, c1, rho, btmax);
+    % tempo_mn = toc;
+    % x_newton_discrete_boundary_value = xk2;
 
     tic;
     [xk2_prec, fk2_prec, gradfk_norm2_prec, k2_prec, xseq2_prec, btseq2_prec] = ...
@@ -85,10 +84,10 @@ for p=1:length(d)
     % tempo_mn_fd_prec = toc;
     % x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
      
-    fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
-    fprintf(fid, "n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk2, k2, gradfk_norm2);
+    %fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
+    %fprintf(fid, "n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk2, k2, gradfk_norm2);
     fprintf(fid, "Tempo di esecuzione Modified Newton con precondizionamento: %.4f\n", tempo_mn_prec);
-    fprintf(fid, "n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk2_prec, k2_prec, gradfk_norm2_prec);
+    %fprintf(fid, "n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk2_prec, k2_prec, gradfk_norm2_prec);
     %fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite: %.4f\n", tempo_mn_fd);
     % fprintf(fid, "n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk2_fd, k2_fd, gradfk_norm2_fd);
     %fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: %.4f\n", tempo_mn_fd_prec);
@@ -99,38 +98,38 @@ for p=1:length(d)
 
         x0_i = x_bar_discrete_boundary_value + 2 * rand(n,1) - 1;
 
-        [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
-            modified_newton_bcktrck(x0_i, discrete_boundary_value_fun, ...
-            discrete_boundary_value_grad , discrete_boundary_value_hess, ...
-            kmax, tolgrad, c1, rho, btmax);
-        x_newton_discrete_boundary_value = xk2;
+        % [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
+        %     modified_newton_bcktrck(x0_i, discrete_boundary_value_fun, ...
+        %     discrete_boundary_value_grad , discrete_boundary_value_hess, ...
+        %     kmax, tolgrad, c1, rho, btmax);
+        % x_newton_discrete_boundary_value = xk2(1)
     
         [xk2_prec, fk2_prec, gradfk_norm2_prec, k2_prec, xseq2_prec, btseq2_prec] = ...
             modified_newton_bcktrck_preconditioning(x0_i, discrete_boundary_value_fun, ...
             discrete_boundary_value_grad , discrete_boundary_value_hess, ...
             kmax, tolgrad, c1, rho, btmax);
-        x_newton_discrete_boundary_value_prec = xk2_prec;
+        x_newton_discrete_boundary_value_prec = xk2_prec(1)
 
         % [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
         %     modified_newton_bcktrck(x0_i, discrete_boundary_value_fun, ...
         %     discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
         %     kmax, tolgrad, c1, rho, btmax);
-        % x_newton_discrete_boundary_value_fd = xk2_fd;
-        % 
-        % [xk2_fd_prec, fk2_fd_prec, gradfk_norm2_fd_prec, k2_fd_prec, xseq2_fd_prec, btseq2_fd_prec] = ...
-        %     modified_newton_bcktrck_preconditioning(x0_i, discrete_boundary_value_fun, ...
-        %     discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
-        %     kmax, tolgrad, c1, rho, btmax);
-        % x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
+        % x_newton_discrete_boundary_value_fd = xk2_fd(1)
 
-        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
-            n, i, fk2, k2, gradfk_norm2);
+        [xk2_fd_prec, fk2_fd_prec, gradfk_norm2_fd_prec, k2_fd_prec, xseq2_fd_prec, btseq2_fd_prec] = ...
+            modified_newton_bcktrck_preconditioning(x0_i, discrete_boundary_value_fun, ...
+            discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
+            kmax, tolgrad, c1, rho, btmax);
+        x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
+
+        % fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+        %     n, i, fk2, k2, gradfk_norm2);
         fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk2_prec, k2_prec, gradfk_norm2_prec);
         % fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
         %     n, i, fk2_fd, k2_fd, gradfk_norm2_fd);
-        % fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
-        %     n, i, fk2_fd_prec, k2_fd_prec, gradfk_norm2_fd_prec);
+        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            n, i, fk2_fd_prec, k2_fd_prec, gradfk_norm2_fd_prec);
 
     end
 end

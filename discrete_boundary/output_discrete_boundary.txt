@@ -1,10 +1,2 @@
 n = 1000
-Tempo di esecuzione Modified Newton: 0.0218
-n = 1000 | f(x) = 5.7227e-19 | iter = 0 | norm grad = 7.28e-11
-Tempo di esecuzione Modified Newton con precondizionamento: 0.0072
-n = 1000 | f(x) = 5.7227e-19 | iter = 0 | norm grad = 7.28e-11
-n = 10000
-Tempo di esecuzione Modified Newton: 0.0150
-n = 10000 | f(x) = 5.7649e-26 | iter = 0 | norm grad = 7.30e-15
-Tempo di esecuzione Modified Newton con precondizionamento: 0.0132
-n = 10000 | f(x) = 5.7649e-26 | iter = 0 | norm grad = 7.30e-15
+Tempo di esecuzione Modified Newton con precondizionamento: 0.0557

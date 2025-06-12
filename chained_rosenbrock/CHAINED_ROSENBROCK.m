@@ -13,8 +13,8 @@ d = 3:1:5;
 num_points = 10;
 
 % Stopping parameters
-tol = 1e-5;
-kmax = 200;
+tol = 1e-6;
+kmax = 2000;
 
 % Chiamo le funzioni
 
@@ -95,36 +95,36 @@ for p=1:length(d)
 
     % con i 10 punti generati uniformemente in un ipercubo
     for i = 1:num_points
-        
+
         x0_i = x_bar_chained_rosenbrock + 2 * rand(n,1) - 1;
 
         [xk, fk, gradfk_norm, k, xseq, btseq] = ...
             modified_newton_bcktrck(x0_i, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
             chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
         x_newton_chained_rosenbrock = xk;
-    
+
         [xk_prec, fk_prec, gradfk_norm_prec, k_prec, xseq_prec, btseq_prec] = ...
             modified_newton_bcktrck_preconditioning(x0_i, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
             chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
         x_newton_chained_rosenbrock_prec = xk;
-    
+
         [xk_fd, fk_fd, gradfk_norm_fd, k_fd, xseq_fd, btseq_fd] = ...
             modified_newton_bcktrck(x0_i, chained_rosenbrock_fun, chained_rosenbrock_grad_fd , ...
             chained_rosenbrock_hess_fd, kmax, tolgrad, c1, rho, btmax);
         x_newton_chained_rosenbrock_fd = xk_fd;
-    
+
         [xk_fd_prec, fk_fd_prec, gradfk_norm_fd_prec, k_fd_prec, xseq_fd_prec, btseq_fd_prec] = ...
             modified_newton_bcktrck_preconditioning(x0_i, chained_rosenbrock_fun, chained_rosenbrock_grad_fd , ...
             chained_rosenbrock_hess_fd, kmax, tolgrad, c1, rho, btmax);
         x_newton_chained_rosenbrock_fd_prec = xk_fd_prec;
 
-        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+        fprintf(fid, "n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk, k, gradfk_norm);
-        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+        fprintf(fid, "n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk_prec, k_prec, gradfk_norm_prec);
-        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+        fprintf(fid, "n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk_fd, k_fd, gradfk_norm_fd);
-        fprintf("n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+        fprintf(fid, "n = %d | Punto #%d | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
             n, i, fk_fd_prec, k_fd_prec, gradfk_norm_fd_prec);
 
     end

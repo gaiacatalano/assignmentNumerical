@@ -52,12 +52,19 @@ delta = sqrt(eps);
 
 
 while k < kmax && gradfk_norm >= tolgrad
-    c = condest(Hessfk)
+    %c = condest(Hessfk)
     if issparse(Hessfk)
         if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
             error('Hessiana contiene NaN o Inf alla iterazione %d', k);
         end
         lambda_min = eigs(Hessfk, 1, 'SA');
+        % try
+        %     lambda_min = eigs(Hessfk, 1, 'SA');
+        % catch
+        %     warning('eigs fallita, uso eig come fallback');
+        %     lambda_min = min(eig(full(Hessfk)));
+        % end
+
     else
         lambda_min = min(eig(Hessfk));
     end
@@ -96,6 +103,7 @@ while k < kmax && gradfk_norm >= tolgrad
         bt = bt + 1;
     end
     if bt == btmax && fnew > farmijo(fk, alpha, c1_gradfk_pk)
+        warning('Backtracking fallito alla iterazione %d', k);
         break
     end
     
