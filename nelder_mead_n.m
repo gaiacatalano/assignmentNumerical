@@ -1,7 +1,7 @@
 function[simplex] = nelder_mead_n(x0, fun, n, rho, chi, gamma, sigma, kmax, tol)
 
     % Parametro di perturbazione
-    delta = 0.05 * norm(x0);
+    delta = 0.12 * norm(x0);
 
     % Più è grande delta scelto, più iterazioni sono necessarie alla
     % convergenza

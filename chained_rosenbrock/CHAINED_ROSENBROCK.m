@@ -9,12 +9,12 @@ addpath('../');
 rng(349131);
 
 % Dimension
-d = 3:1:5; 
+d = 3:1:3; 
 num_points = 10;
 
 % Stopping parameters
 tol = 1e-6;
-kmax = 2000;
+kmax = 1000;
 
 % Chiamo le funzioni
 
@@ -29,12 +29,13 @@ fid = fopen('output_chained_rosenbrock.txt', 'w');
     
 % ======================= MODIFIED NEWTON ===========================
 
+fprintf(fid, 'Modified Newton Method\n');
 for p=1:length(d)
 
     fprintf('Sto stampando risultati per p = %d\n', p);
 
     n = 10^d(p);
-    fprintf(fid, "n = %d\n", n);
+    %fprintf(fid, "n = %d\n", n);
 
     % Backtracking parameters
     rho = 0.5;
@@ -43,7 +44,7 @@ for p=1:length(d)
     % Newton parameters
     tolgrad = 1e-5;
     c1 = 1e-8;
-    btmax = 20;
+    btmax = 40;
 
     % con il mio x_bar
     x_bar_chained_rosenbrock = zeros(n,1);         
@@ -60,7 +61,7 @@ for p=1:length(d)
         modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
         chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
     tempo_mn = toc;
-    x_newton_chained_rosenbrock = xk'
+    x_newton_chained_rosenbrock = xk';
 
     tic;
     [xk_prec, fk_prec, gradfk_norm_prec, k_prec, xseq_prec, btseq_prec] = ...
@@ -84,7 +85,7 @@ for p=1:length(d)
     x_newton_chained_rosenbrock_fd_prec = xk_fd_prec;
 
     fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
-    fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk, k, gradfk_norm);
+    fprintf(fid, "n = %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, fk, k, gradfk_norm);
     fprintf(fid, "Tempo di esecuzione Modified Newton con precondizionamento: %.4f\n", tempo_mn_prec);
     fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk_prec, k_prec, gradfk_norm_prec);
     fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite: %.4f\n", tempo_mn_fd);
@@ -134,6 +135,8 @@ end
 
 % ======================= NELDER-MEAD ===========================
 
+fprintf(fid, "Nelder Method\n");
+
 for n = [10,25,50]
 
     % Nelder-Mead parameters
@@ -142,7 +145,7 @@ for n = [10,25,50]
     gamma_nm = 0.5;
     sigma_nm = 0.5;
 
-    fprintf('Sto stampando risultati per n = %d\n', n);
+    %fprintf('Sto stampando risultati per n = %d\n', n);
 
     % con il mio x_bar
     x_bar_chained_rosenbrock = zeros(n,1);        
@@ -162,7 +165,7 @@ for n = [10,25,50]
     simplex_chianed_rosenbrock = simplex_chained_rosenbrock(:,1);
 
     fprintf(fid, "Tempo di esecuzione Nelder Mead: %.4f\n", tempo_nelder_mead);
-    fprintf("Nelder-Mead | n = %d | #%d | f(x) = %.4e\n", n, i, chained_rosenbrock_fun(simplex_chianed_rosenbrock));
+    fprintf(fid, "Nelder-Mead | n = %d | #%d | f(x) = %.4e\n", n, i, chained_rosenbrock_fun(simplex_chianed_rosenbrock));
     
     for i = 1:num_points
 
@@ -173,7 +176,7 @@ for n = [10,25,50]
     
         x_best_i = simplex_i(:,1);
 
-        fprintf("Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, chained_rosenbrock_fun(x_best_i));
+        fprintf(fid, "Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, chained_rosenbrock_fun(x_best_i));
 
      end
     
