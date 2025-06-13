@@ -14,7 +14,7 @@ num_points = 10;
 
 % Stopping parameters
 tol = 1e-6;
-kmax = 2000;
+kmax = 600;
 
 % Chiamo le funzioni
 
@@ -60,14 +60,14 @@ for p=1:length(d)
         modified_newton_bcktrck(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
         chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
     tempo_mn = toc;
-    x_newton_chained_rosenbrock = xk'
+    x_newton_chained_rosenbrock = xk;
 
     tic;
     [xk_prec, fk_prec, gradfk_norm_prec, k_prec, xseq_prec, btseq_prec] = ...
         modified_newton_bcktrck_preconditioning(x_bar_chained_rosenbrock, chained_rosenbrock_fun, chained_rosenbrock_grad , ...
         chained_rosenbrock_hess, kmax, tolgrad, c1, rho, btmax);
     tempo_mn_prec = toc;
-    x_newton_chained_rosenbrock_prec = xk';
+    x_newton_chained_rosenbrock_prec = xk;
 
     tic;
     [xk_fd, fk_fd, gradfk_norm_fd, k_fd, xseq_fd, btseq_fd] = ...
@@ -84,7 +84,7 @@ for p=1:length(d)
     x_newton_chained_rosenbrock_fd_prec = xk_fd_prec;
 
     fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
-    fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk, k, gradfk_norm);
+    fprintf(fid, "x= %d | f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk, k, gradfk_norm);
     fprintf(fid, "Tempo di esecuzione Modified Newton con precondizionamento: %.4f\n", tempo_mn_prec);
     fprintf(fid, "f(x) = %.4e | iter = %d | norm grad = %.2e\n", fk_prec, k_prec, gradfk_norm_prec);
     fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite: %.4f\n", tempo_mn_fd);

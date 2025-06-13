@@ -18,22 +18,44 @@ fk = f(xk);
 gradfk = gradf(xk);
 k = 0;
 gradfk_norm = norm(gradfk);
-Hessfk = Hessf(xk);
 
-delta = sqrt(eps);
-
+%delta = sqrt(eps);
 
 while k < kmax && gradfk_norm >= tolgrad
+    Hessfk = Hessf(xk);
+    beta = norm(Hessfk, 'fro');
 
-    if issparse(Hessfk)
-        if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
-            error('Hessiana contiene NaN o Inf alla iterazione %d', k);
-        end
-        lambda_min = eigs(Hessfk, 1, 'SA');
+    % Check diagonale: tutti gli a_ii > 0?
+    if min(diag(Hessfk)) > 0
+        tau_k = 0;
     else
-        lambda_min = min(eig(Hessfk));
+        tau_k = beta / 2;
     end
-    tau_k = max(0, delta-lambda_min);
+
+    % Inizia il ciclo di regolarizzazione
+    j = 0;
+    while true
+        % Tentativo di Cholesky: A + tau_k * I
+        try
+            R = chol(Hessfk + tau_k * speye(size(Hessfk)));
+            % Se va a buon fine, esci
+            break;
+        catch
+            % Altrimenti aggiorna tau_k
+            tau_k = max(2 * tau_k, beta / 2);
+            j = j + 1;
+        end
+    end
+
+    % if issparse(Hessfk)
+    %     if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
+    %         error('Hessiana contiene NaN o Inf alla iterazione %d', k);
+    %     end
+    %     lambda_min = eigs(Hessfk, 1, 'SA');
+    % else
+    %     lambda_min = min(eig(Hessfk));
+    % end
+    % tau_k = max(0, delta-lambda_min);
     E_k = tau_k*speye(size(Hessfk,1));
     B_k = Hessfk + E_k;
     

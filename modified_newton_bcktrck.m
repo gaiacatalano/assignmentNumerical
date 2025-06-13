@@ -46,31 +46,55 @@ else
 end
 k = 0;
 gradfk_norm = norm(gradfk);
-Hessfk = Hessf(xk);
-
-delta = sqrt(eps);
-
+%delta = sqrt(eps);
 
 while k < kmax && gradfk_norm >= tolgrad
-    %c = condest(Hessfk)
-    if issparse(Hessfk)
-        if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
-            error('Hessiana contiene NaN o Inf alla iterazione %d', k);
-        end
-        lambda_min = eigs(Hessfk, 1, 'SA');
-        % try
-        %     lambda_min = eigs(Hessfk, 1, 'SA');
-        % catch
-        %     warning('eigs fallita, uso eig come fallback');
-        %     lambda_min = min(eig(full(Hessfk)));
-        % end
+    Hessfk = Hessf(xk);
+    beta = norm(Hessfk, 'fro');
 
+    % Check diagonale: tutti gli a_ii > 0?
+    if min(diag(Hessfk)) > 0
+        tau_k = 0;
     else
-        lambda_min = min(eig(Hessfk));
+        tau_k = beta / 2;
     end
-    tau_k = max(0, delta-lambda_min);
+
+    % Inizia il ciclo di regolarizzazione
+    j = 0;
+    while true
+        % Tentativo di Cholesky: A + tau_k * I
+        try
+            R = chol(Hessfk + tau_k * speye(size(Hessfk)));
+            % Se va a buon fine, esci
+            break;
+        catch
+            % Altrimenti aggiorna tau_k
+            tau_k = max(2 * tau_k, beta / 2);
+            j = j + 1;
+        end
+    end
+
+    %c = condest(Hessfk)
+    % if issparse(Hessfk)
+    %     if any(isnan(Hessfk(:))) || any(isinf(Hessfk(:)))
+    %         error('Hessiana contiene NaN o Inf alla iterazione %d', k);
+    %     end
+    %     lambda_min = eigs(Hessfk, 1, 'SA');
+    %     % try
+    %     %     lambda_min = eigs(Hessfk, 1, 'SA');
+    %     % catch
+    %     %     warning('eigs fallita, uso eig come fallback');
+    %     %     lambda_min = min(eig(full(Hessfk)));
+    %     % end
+    % 
+    % else
+    %     lambda_min = min(eig(Hessfk));
+    % end
+    % tau_k = max(0, delta-lambda_min);
+
     E_k = tau_k*speye(size(Hessfk,1));
     B_k = Hessfk + E_k;
+    pk = - B_k\gradfk;
     
     %%%%%% L.S. SOLVED WITH pcg %%%%%%%%%%%%%%%%%%%%%%%%%%%
     % For simplicity: default values for tol and maxit; no preconditioning
@@ -78,7 +102,7 @@ while k < kmax && gradfk_norm >= tolgrad
     % If you want to silence the messages about "solution quality", use
     % instead: 
     %[pk, flagk, relresk, iterk, resveck] = pcg(Hessf(xk), -gradfk);
-    [pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk);
+    %[pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk);
     
     % Reset the value of alpha
     alpha = 1;

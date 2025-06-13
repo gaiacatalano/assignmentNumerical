@@ -25,12 +25,10 @@ function H = problem_213_hess_fd(x, hstep)
     % Ciclo sulle colonne (variabili x_j)
     for i = 1:n
 
-        fi = 2*x(i+1) + h^2*(x(i+1) + sin(x(i+1))) - x(i) - x(i+2);
-
-        d0(i) = 4 + h^4*(hstep^2 + sin(x(i+1))^2*cos(hstep)^2 + cos(x(i+1))^2*sin(hstep)^2 + sin(x(i+1))^2 +2*hstep*cos(x(i+1))*sin(hstep) ...
-                    - 2*sin(x(i+1))^2*cos(hstep))/(hstep^2) + 4*h^2*(hstep + cos(x(i+1))*sin(hstep))/hstep + 2*fi*(h^2*(sin(x(i+1))*cos(h) - sin(x(i+1))))/(hstep^2);
-        plus = h^4/2*((hstep + sin(x(i+1) + hstep) - sin(x(i+1)))^2)/(hstep^2) - h^2*(hstep + sin(x(i+1) + hstep) - sin(x(i+1)))/hstep ...
-                    + h^2*(fi*(hstep + sin(x(i+1) + hstep) - sin(x(i+1))))/(hstep^2);
+        d0(i) = 4 + h^4*(hstep^2 + sin(x(i+1))^2*cos(hstep)^2 + cos(x(i))^2*sin(hstep)^2 + sin(x(i))^2 +2*hstep*cos(x(i))*sin(hstep) ...
+                    - 2*sin(x(i))^2*cos(hstep))/(hstep^2) + 4*h^2*(hstep + cos(x(i))*sin(hstep))/hstep + 2*fk(i)*(h^2*(sin(x(i))*cos(h) - sin(x(i))))/(hstep^2);
+        plus = h^4/2*((hstep + sin(x(i) + hstep) - sin(x(i)))^2)/(hstep^2) - h^2*(hstep + sin(x(i) + hstep) - sin(x(i)))/hstep ...
+                    + h^2*(fk(i)*(hstep + sin(x(i) + hstep) - sin(x(i))))/(hstep^2);
         
         if i ~= 1
             d0(i) = d0(i) + 1;
@@ -71,7 +69,7 @@ function H = problem_213_hess_fd(x, hstep)
 
     end
 
-    H = spdiags([dm2 dm1 d0 [0;dm1(1:end-1)] [0;0;dm2(1:end-2)]], [-2 -1 0 -1 -2], n, n);
+    H = spdiags([dm2 dm1 d0 dp1 dp2], [-2 -1 0 -1 -2], n, n);
 
     % Simmetrizza per sicurezza
     H = 0.5 * (H + H');

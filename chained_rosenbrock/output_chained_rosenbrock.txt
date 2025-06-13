@@ -1,3 +1,111 @@
-Tempo di esecuzione Nelder Mead: 0.1122
-Tempo di esecuzione Nelder Mead: 0.0293
-Tempo di esecuzione Nelder Mead: 0.0715
+n = 1000
+Tempo di esecuzione Modified Newton: 2.0820
+f(x) = 9.8956e+02 | iter = 2000 | norm grad = 8.05e-01
+Tempo di esecuzione Modified Newton con precondizionamento: 3.3584
+f(x) = 9.8958e+02 | iter = 2000 | norm grad = 4.37e-01
+Tempo di esecuzione Modified Newton con differenze finite: 0.9611
+f(x) = 9.3687e+02 | iter = 2000 | norm grad = 2.65e+00
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 2.0909
+f(x) = 9.3687e+02 | iter = 2000 | norm grad = 2.65e+00
+n = 1000 | Punto #1 | f(x) = 9.8908e+02 | iter = 2000 (norm grad = 1.43e+00)
+n = 1000 | Punto #1 | f(x) = 9.8908e+02 | iter = 2000 (norm grad = 1.43e+00)
+n = 1000 | Punto #1 | f(x) = 9.3354e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #1 | f(x) = 9.3354e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #2 | f(x) = 9.8842e+02 | iter = 2000 (norm grad = 1.89e+00)
+n = 1000 | Punto #2 | f(x) = 9.8842e+02 | iter = 2000 (norm grad = 1.89e+00)
+n = 1000 | Punto #2 | f(x) = 9.3493e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #2 | f(x) = 9.3497e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #3 | f(x) = 9.8960e+02 | iter = 2000 (norm grad = 6.97e-02)
+n = 1000 | Punto #3 | f(x) = 9.8960e+02 | iter = 2000 (norm grad = 6.97e-02)
+n = 1000 | Punto #3 | f(x) = 8.5560e+02 | iter = 2000 (norm grad = 4.06e+00)
+n = 1000 | Punto #3 | f(x) = 8.5762e+02 | iter = 2000 (norm grad = 4.15e+00)
+n = 1000 | Punto #4 | f(x) = 9.8524e+02 | iter = 2000 (norm grad = 2.42e+00)
+n = 1000 | Punto #4 | f(x) = 9.8532e+02 | iter = 2000 (norm grad = 2.42e+00)
+n = 1000 | Punto #4 | f(x) = 9.3452e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #4 | f(x) = 9.3452e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #5 | f(x) = 9.8506e+02 | iter = 2000 (norm grad = 2.42e+00)
+n = 1000 | Punto #5 | f(x) = 9.8494e+02 | iter = 2000 (norm grad = 2.42e+00)
+n = 1000 | Punto #5 | f(x) = 9.3236e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #5 | f(x) = 9.3237e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #6 | f(x) = 9.8440e+02 | iter = 2000 (norm grad = 2.41e+00)
+n = 1000 | Punto #6 | f(x) = 9.8476e+02 | iter = 2000 (norm grad = 2.42e+00)
+n = 1000 | Punto #6 | f(x) = 9.3002e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #6 | f(x) = 9.3001e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #7 | f(x) = 9.8958e+02 | iter = 2000 (norm grad = 3.76e-01)
+n = 1000 | Punto #7 | f(x) = 9.8958e+02 | iter = 2000 (norm grad = 3.73e-01)
+n = 1000 | Punto #7 | f(x) = 9.3614e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #7 | f(x) = 9.3614e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #8 | f(x) = 9.8959e+02 | iter = 286 (norm grad = 3.32e-01)
+n = 1000 | Punto #8 | f(x) = 9.8958e+02 | iter = 2000 (norm grad = 3.76e-01)
+n = 1000 | Punto #8 | f(x) = 9.3770e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #8 | f(x) = 9.3775e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #9 | f(x) = 9.8699e+02 | iter = 2000 (norm grad = 2.41e+00)
+n = 1000 | Punto #9 | f(x) = 9.8712e+02 | iter = 2000 (norm grad = 2.40e+00)
+n = 1000 | Punto #9 | f(x) = 9.3518e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #9 | f(x) = 9.3518e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #10 | f(x) = 9.8881e+02 | iter = 2000 (norm grad = 1.66e+00)
+n = 1000 | Punto #10 | f(x) = 9.8881e+02 | iter = 2000 (norm grad = 1.66e+00)
+n = 1000 | Punto #10 | f(x) = 9.3344e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 1000 | Punto #10 | f(x) = 9.3344e+02 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000
+Tempo di esecuzione Modified Newton: 14.7222
+f(x) = 9.9724e+03 | iter = 2000 | norm grad = 1.10e+01
+Tempo di esecuzione Modified Newton con precondizionamento: 21.9715
+f(x) = 9.9667e+03 | iter = 2000 | norm grad = 1.57e+01
+Tempo di esecuzione Modified Newton con differenze finite: 7.9872
+f(x) = 9.8459e+03 | iter = 2000 | norm grad = 2.65e+00
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 15.0808
+f(x) = 9.8459e+03 | iter = 2000 | norm grad = 2.65e+00
+n = 10000 | Punto #1 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.00e-01)
+n = 10000 | Punto #1 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.00e-01)
+n = 10000 | Punto #1 | f(x) = 9.8246e+03 | iter = 2000 (norm grad = 4.85e+00)
+n = 10000 | Punto #1 | f(x) = 9.8246e+03 | iter = 2000 (norm grad = 4.90e+00)
+n = 10000 | Punto #2 | f(x) = 9.8960e+03 | iter = 2000 (norm grad = 2.40e+00)
+n = 10000 | Punto #2 | f(x) = 9.8959e+03 | iter = 2000 (norm grad = 2.40e+00)
+n = 10000 | Punto #2 | f(x) = 9.8631e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #2 | f(x) = 9.8630e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #3 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.32e-01)
+n = 10000 | Punto #3 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 2.79e-01)
+n = 10000 | Punto #3 | f(x) = 9.8549e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #3 | f(x) = 9.8549e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #4 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.54e-01)
+n = 10000 | Punto #4 | f(x) = 9.8961e+03 | iter = 2000 (norm grad = 2.40e+00)
+n = 10000 | Punto #4 | f(x) = 9.8551e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #4 | f(x) = 9.8550e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #5 | f(x) = 9.8958e+03 | iter = 2000 (norm grad = 2.41e+00)
+n = 10000 | Punto #5 | f(x) = 9.8962e+03 | iter = 2000 (norm grad = 2.40e+00)
+n = 10000 | Punto #5 | f(x) = 9.8645e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #5 | f(x) = 9.8643e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #6 | f(x) = 9.8958e+03 | iter = 2000 (norm grad = 2.41e+00)
+n = 10000 | Punto #6 | f(x) = 9.8958e+03 | iter = 2000 (norm grad = 2.41e+00)
+n = 10000 | Punto #6 | f(x) = 9.7740e+03 | iter = 2000 (norm grad = 5.14e+00)
+n = 10000 | Punto #6 | f(x) = 9.7740e+03 | iter = 2000 (norm grad = 4.93e+00)
+n = 10000 | Punto #7 | f(x) = 9.8965e+03 | iter = 2000 (norm grad = 2.39e+00)
+n = 10000 | Punto #7 | f(x) = 9.8961e+03 | iter = 2000 (norm grad = 2.40e+00)
+n = 10000 | Punto #7 | f(x) = 9.8631e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #7 | f(x) = 9.8631e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #8 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.90e-01)
+n = 10000 | Punto #8 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.79e-01)
+n = 10000 | Punto #8 | f(x) = 9.7756e+03 | iter = 2000 (norm grad = 4.12e+00)
+n = 10000 | Punto #8 | f(x) = 9.7756e+03 | iter = 2000 (norm grad = 4.12e+00)
+n = 10000 | Punto #9 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.42e-01)
+n = 10000 | Punto #9 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.73e-01)
+n = 10000 | Punto #9 | f(x) = 9.8457e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #9 | f(x) = 9.8458e+03 | iter = 2000 (norm grad = 2.65e+00)
+n = 10000 | Punto #10 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.75e-01)
+n = 10000 | Punto #10 | f(x) = 9.8987e+03 | iter = 2000 (norm grad = 3.59e-01)
+n = 10000 | Punto #10 | f(x) = 9.7762e+03 | iter = 2000 (norm grad = 4.64e+00)
+n = 10000 | Punto #10 | f(x) = 9.7762e+03 | iter = 2000 (norm grad = 4.50e+00)
+n = 100000
+Tempo di esecuzione Modified Newton: 240.3794
+f(x) = 9.9137e+04 | iter = 2000 | norm grad = 2.83e+00
+Tempo di esecuzione Modified Newton con precondizionamento: 232.9358
+f(x) = 9.9140e+04 | iter = 2000 | norm grad = 2.82e+00
+Tempo di esecuzione Modified Newton con differenze finite: 112.5364
+f(x) = 9.8937e+04 | iter = 2000 | norm grad = 2.65e+00
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 165.4687
+f(x) = 9.8937e+04 | iter = 2000 | norm grad = 2.65e+00
+n = 100000 | Punto #1 | f(x) = 9.8987e+04 | iter = 2000 (norm grad = 2.39e+00)
+n = 100000 | Punto #1 | f(x) = 9.8987e+04 | iter = 2000 (norm grad = 2.39e+00)
+n = 100000 | Punto #1 | f(x) = 9.8792e+04 | iter = 2000 (norm grad = 7.06e+00)
+n = 100000 | Punto #1 | f(x) = 9.8800e+04 | iter = 2000 (norm grad = 7.71e+00)

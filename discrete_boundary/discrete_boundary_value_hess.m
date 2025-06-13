@@ -8,8 +8,8 @@ function hess = discrete_boundary_value_hess(x)
     x = [x_first; x; x_last];    
 
     d0 = zeros(n,1);
-    dp1 = zeros(n,1);
-    dp2 = zeros(n,1);
+    %dp1 = zeros(n,1);
+    %dp2 = zeros(n,1);
     dm1 = zeros(n,1);
     dm2 = zeros(n,1);
 
@@ -54,8 +54,8 @@ function hess = discrete_boundary_value_hess(x)
     end
 
     %hess = spdiags([dm2 dm1 d0 dp1 dp2], [-2 -1 0 1 2], n, n);
-    hess = spdiags([dm2 dm1 d0 [0; dp1(1:end-1)] [0; 0; dp2(1:end-2)]], [-2 -1 0 1 2], n, n);
+    hess = spdiags([dm2 dm1 d0 [0; dm1(1:end-1)] [0; 0; dm2(1:end-2)]], [-2 -1 0 1 2], n, n);
     hess = 0.5 * (hess + hess');
-    condhess = condest(hess)
+    %condhess = condest(hess)
 
 end

@@ -1,1 +1,58 @@
 n = 1000
+Tempo di esecuzione Modified Newton: 0.1804
+f(x) = 5.0641e-03 | iter = 200 | norm grad = 1.22e-02
+Tempo di esecuzione Modified Newton con precondizionamento: 0.1636
+f(x) = 5.0641e-03 | iter = 200 | norm grad = 1.22e-02
+Tempo di esecuzione Modified Newton con differenze finite: 0.0244
+f(x) = 3.7724e-01 | iter = 3 | norm grad = 8.27e-01
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 0.0186
+f(x) = 3.7724e-01 | iter = 3 | norm grad = 8.27e-01
+n = 1000 | Punto #1 | f(x) = 9.7042e-02 | iter = 200 (norm grad = 7.30e-02)
+n = 1000 | Punto #1 | f(x) = 9.7042e-02 | iter = 200 (norm grad = 7.30e-02)
+n = 1000 | Punto #1 | f(x) = 5.7357e-01 | iter = 200 (norm grad = 6.62e-02)
+n = 1000 | Punto #1 | f(x) = 5.7357e-01 | iter = 200 (norm grad = 6.62e-02)
+n = 1000 | Punto #2 | f(x) = 1.0872e-01 | iter = 200 (norm grad = 6.91e-02)
+n = 1000 | Punto #2 | f(x) = 1.0872e-01 | iter = 200 (norm grad = 6.91e-02)
+n = 1000 | Punto #2 | f(x) = 5.7350e-01 | iter = 200 (norm grad = 6.27e-02)
+n = 1000 | Punto #2 | f(x) = 5.7350e-01 | iter = 200 (norm grad = 6.27e-02)
+n = 1000 | Punto #3 | f(x) = 1.0886e-01 | iter = 200 (norm grad = 7.73e-02)
+n = 1000 | Punto #3 | f(x) = 1.0886e-01 | iter = 200 (norm grad = 7.73e-02)
+n = 1000 | Punto #3 | f(x) = 5.8230e-01 | iter = 200 (norm grad = 1.21e-01)
+n = 1000 | Punto #3 | f(x) = 5.8230e-01 | iter = 200 (norm grad = 1.21e-01)
+n = 1000 | Punto #4 | f(x) = 9.5092e-02 | iter = 200 (norm grad = 7.24e-02)
+n = 1000 | Punto #4 | f(x) = 9.5092e-02 | iter = 200 (norm grad = 7.24e-02)
+n = 1000 | Punto #4 | f(x) = 5.6822e-01 | iter = 200 (norm grad = 1.49e-01)
+n = 1000 | Punto #4 | f(x) = 5.6822e-01 | iter = 200 (norm grad = 1.49e-01)
+n = 1000 | Punto #5 | f(x) = 1.0416e-01 | iter = 200 (norm grad = 6.88e-02)
+n = 1000 | Punto #5 | f(x) = 1.0416e-01 | iter = 200 (norm grad = 6.88e-02)
+n = 1000 | Punto #5 | f(x) = 5.7313e-01 | iter = 200 (norm grad = 6.28e-02)
+n = 1000 | Punto #5 | f(x) = 5.7313e-01 | iter = 200 (norm grad = 6.28e-02)
+n = 1000 | Punto #6 | f(x) = 8.7922e-02 | iter = 200 (norm grad = 6.45e-02)
+n = 1000 | Punto #6 | f(x) = 8.7922e-02 | iter = 200 (norm grad = 6.45e-02)
+n = 1000 | Punto #6 | f(x) = 3.2276e+01 | iter = 200 (norm grad = 3.11e+01)
+n = 1000 | Punto #6 | f(x) = 3.2276e+01 | iter = 200 (norm grad = 3.11e+01)
+n = 1000 | Punto #7 | f(x) = 1.2616e-01 | iter = 200 (norm grad = 7.14e-02)
+n = 1000 | Punto #7 | f(x) = 1.2616e-01 | iter = 200 (norm grad = 7.14e-02)
+n = 1000 | Punto #7 | f(x) = 3.5361e+01 | iter = 200 (norm grad = 3.26e+01)
+n = 1000 | Punto #7 | f(x) = 3.5361e+01 | iter = 200 (norm grad = 3.26e+01)
+n = 1000 | Punto #8 | f(x) = 1.0959e-01 | iter = 200 (norm grad = 7.25e-02)
+n = 1000 | Punto #8 | f(x) = 1.0959e-01 | iter = 200 (norm grad = 7.25e-02)
+n = 1000 | Punto #8 | f(x) = 5.7720e-01 | iter = 200 (norm grad = 6.43e-02)
+n = 1000 | Punto #8 | f(x) = 5.7720e-01 | iter = 200 (norm grad = 6.43e-02)
+n = 1000 | Punto #9 | f(x) = 8.4173e-02 | iter = 200 (norm grad = 6.61e-02)
+n = 1000 | Punto #9 | f(x) = 8.4173e-02 | iter = 200 (norm grad = 6.61e-02)
+n = 1000 | Punto #9 | f(x) = 5.5843e-01 | iter = 200 (norm grad = 1.13e-01)
+n = 1000 | Punto #9 | f(x) = 5.5843e-01 | iter = 200 (norm grad = 1.13e-01)
+n = 1000 | Punto #10 | f(x) = 8.7175e-02 | iter = 200 (norm grad = 6.26e-02)
+n = 1000 | Punto #10 | f(x) = 8.7175e-02 | iter = 200 (norm grad = 6.26e-02)
+n = 1000 | Punto #10 | f(x) = 5.6144e-01 | iter = 200 (norm grad = 6.30e-02)
+n = 1000 | Punto #10 | f(x) = 5.6144e-01 | iter = 200 (norm grad = 6.30e-02)
+n = 10000
+Tempo di esecuzione Modified Newton: 3.3685
+f(x) = 5.0638e-03 | iter = 200 | norm grad = 1.22e-02
+Tempo di esecuzione Modified Newton con precondizionamento: 3.4673
+f(x) = 5.0638e-03 | iter = 200 | norm grad = 1.22e-02
+Tempo di esecuzione Modified Newton con differenze finite: 0.0915
+f(x) = 3.7692e-01 | iter = 3 | norm grad = 8.27e-01
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 0.1380
+f(x) = 3.7692e-01 | iter = 3 | norm grad = 8.27e-01
