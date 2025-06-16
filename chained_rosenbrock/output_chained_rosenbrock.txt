@@ -1,4 +1,5 @@
 Modified Newton Method
+<<<<<<< HEAD
 Tempo di esecuzione Modified Newton: 1.3030
 n = 1000 | f(x) = 1.0697e+03 | iter = 1000 | norm grad = 7.71e+00
 Tempo di esecuzione Modified Newton con precondizionamento: 2.5557
@@ -324,3 +325,90 @@ Nelder-Mead | n=50 | #7 | f(x)=7.3825e+02
 Nelder-Mead | n=50 | #8 | f(x)=1.3301e+02
 Nelder-Mead | n=50 | #9 | f(x)=2.3664e+02
 Nelder-Mead | n=50 | #10 | f(x)=6.7269e+02
+=======
+Tempo di esecuzione Modified Newton: 0.4649
+n = 1000 | f(x) = 9.8955e+02 | iter = 1000 | norm grad = 6.58e-01
+Tempo di esecuzione Modified Newton con precondizionamento: 1.0490
+f(x) = 9.8955e+02 | iter = 1000 | norm grad = 7.17e-01
+Tempo di esecuzione Modified Newton con differenze finite: 0.1910
+f(x) = 9.6635e+02 | iter = 1000 | norm grad = 2.65e+00
+Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 0.6360
+f(x) = 9.6635e+02 | iter = 1000 | norm grad = 2.65e+00
+n = 1000 | Punto #1 | f(x) = 9.8945e+02 | iter = 1000 (norm grad = 8.55e-01)
+n = 1000 | Punto #1 | f(x) = 9.8945e+02 | iter = 1000 (norm grad = 8.55e-01)
+n = 1000 | Punto #1 | f(x) = 9.5448e+02 | iter = 1000 (norm grad = 4.48e+00)
+n = 1000 | Punto #1 | f(x) = 9.5651e+02 | iter = 1000 (norm grad = 4.18e+00)
+n = 1000 | Punto #2 | f(x) = 9.8918e+02 | iter = 1000 (norm grad = 1.31e+00)
+n = 1000 | Punto #2 | f(x) = 9.8918e+02 | iter = 1000 (norm grad = 1.31e+00)
+n = 1000 | Punto #2 | f(x) = 9.6261e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #2 | f(x) = 9.6261e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #3 | f(x) = 9.8960e+02 | iter = 1000 (norm grad = 3.17e-02)
+n = 1000 | Punto #3 | f(x) = 9.8960e+02 | iter = 1000 (norm grad = 3.17e-02)
+n = 1000 | Punto #3 | f(x) = 9.6485e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #3 | f(x) = 9.6485e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #4 | f(x) = 9.8950e+02 | iter = 1000 (norm grad = 1.03e+00)
+n = 1000 | Punto #4 | f(x) = 9.8950e+02 | iter = 1000 (norm grad = 1.54e+00)
+n = 1000 | Punto #4 | f(x) = 9.6381e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #4 | f(x) = 9.6381e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #5 | f(x) = 9.8636e+02 | iter = 1000 (norm grad = 2.42e+00)
+n = 1000 | Punto #5 | f(x) = 9.8630e+02 | iter = 1000 (norm grad = 2.42e+00)
+n = 1000 | Punto #5 | f(x) = 9.6710e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #5 | f(x) = 9.6771e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #6 | f(x) = 9.8820e+02 | iter = 1000 (norm grad = 5.26e+00)
+n = 1000 | Punto #6 | f(x) = 9.8742e+02 | iter = 1000 (norm grad = 2.39e+00)
+n = 1000 | Punto #6 | f(x) = 9.5903e+02 | iter = 1000 (norm grad = 5.05e+00)
+n = 1000 | Punto #6 | f(x) = 9.5913e+02 | iter = 1000 (norm grad = 4.50e+00)
+n = 1000 | Punto #7 | f(x) = 9.8959e+02 | iter = 1000 (norm grad = 3.32e-01)
+n = 1000 | Punto #7 | f(x) = 9.8959e+02 | iter = 1000 (norm grad = 3.31e-01)
+n = 1000 | Punto #7 | f(x) = 9.6569e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #7 | f(x) = 9.6569e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #8 | f(x) = 9.8959e+02 | iter = 1000 (norm grad = 3.63e-01)
+n = 1000 | Punto #8 | f(x) = 9.8959e+02 | iter = 1000 (norm grad = 3.63e-01)
+n = 1000 | Punto #8 | f(x) = 9.6497e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #8 | f(x) = 9.6497e+02 | iter = 1000 (norm grad = 2.65e+00)
+n = 1000 | Punto #9 | f(x) = 9.8961e+02 | iter = 1000 (norm grad = 3.18e+00)
+n = 1000 | Punto #9 | f(x) = 9.8961e+02 | iter = 1000 (norm grad = 3.14e+00)
+n = 1000 | Punto #9 | f(x) = 9.8003e+02 | iter = 1000 (norm grad = 4.21e+00)
+n = 1000 | Punto #9 | f(x) = 9.7846e+02 | iter = 1000 (norm grad = 4.65e+00)
+n = 1000 | Punto #10 | f(x) = 9.8935e+02 | iter = 1000 (norm grad = 1.07e+00)
+n = 1000 | Punto #10 | f(x) = 9.8935e+02 | iter = 1000 (norm grad = 1.07e+00)
+n = 1000 | Punto #10 | f(x) = 9.4624e+02 | iter = 1000 (norm grad = 6.90e+00)
+n = 1000 | Punto #10 | f(x) = 9.4990e+02 | iter = 1000 (norm grad = 6.34e+00)
+Nelder Method
+Tempo di esecuzione Nelder Mead: 0.0098
+Nelder-Mead | n = 10 | #10 | f(x) = 4.0554e+00
+Nelder-Mead | n=10 | #1 | f(x)=3.3737e+00
+Nelder-Mead | n=10 | #2 | f(x)=4.2082e+00
+Nelder-Mead | n=10 | #3 | f(x)=6.2001e+00
+Nelder-Mead | n=10 | #4 | f(x)=4.9034e+00
+Nelder-Mead | n=10 | #5 | f(x)=5.7077e+00
+Nelder-Mead | n=10 | #6 | f(x)=5.6675e+00
+Nelder-Mead | n=10 | #7 | f(x)=5.4600e+00
+Nelder-Mead | n=10 | #8 | f(x)=8.5624e+00
+Nelder-Mead | n=10 | #9 | f(x)=4.9427e+00
+Nelder-Mead | n=10 | #10 | f(x)=3.6053e+00
+Tempo di esecuzione Nelder Mead: 0.0154
+Nelder-Mead | n = 25 | #25 | f(x) = 3.5100e+01
+Nelder-Mead | n=25 | #1 | f(x)=2.6093e+01
+Nelder-Mead | n=25 | #2 | f(x)=2.4380e+01
+Nelder-Mead | n=25 | #3 | f(x)=2.4704e+01
+Nelder-Mead | n=25 | #4 | f(x)=2.4453e+01
+Nelder-Mead | n=25 | #5 | f(x)=2.5468e+01
+Nelder-Mead | n=25 | #6 | f(x)=4.3470e+01
+Nelder-Mead | n=25 | #7 | f(x)=4.1110e+01
+Nelder-Mead | n=25 | #8 | f(x)=2.3157e+01
+Nelder-Mead | n=25 | #9 | f(x)=3.0067e+01
+Nelder-Mead | n=25 | #10 | f(x)=2.5575e+01
+Tempo di esecuzione Nelder Mead: 0.0265
+Nelder-Mead | n = 50 | #50 | f(x) = 1.1830e+03
+Nelder-Mead | n=50 | #1 | f(x)=5.6456e+02
+Nelder-Mead | n=50 | #2 | f(x)=5.4605e+02
+Nelder-Mead | n=50 | #3 | f(x)=5.6246e+02
+Nelder-Mead | n=50 | #4 | f(x)=5.8308e+02
+Nelder-Mead | n=50 | #5 | f(x)=4.7501e+02
+Nelder-Mead | n=50 | #6 | f(x)=2.9778e+02
+Nelder-Mead | n=50 | #7 | f(x)=1.4345e+03
+Nelder-Mead | n=50 | #8 | f(x)=2.2268e+02
+Nelder-Mead | n=50 | #9 | f(x)=2.9983e+02
+Nelder-Mead | n=50 | #10 | f(x)=5.8762e+02
+>>>>>>> 0cef71830b752cb760f18f261c67e9d5ab506dd4

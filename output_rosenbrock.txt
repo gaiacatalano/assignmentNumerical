@@ -1,2 +1,28 @@
-Tempo di esecuzione Nelder mead 3.530970e-02
-Tempo di esecuzione Modified Newton 1.408998e-01
+== RESULTS FOR MODIFIED NEWTON WITH BACKTRACKING ==
+
+Starting point: [1.200000, 1.200000]
+Number of iterations: 8
+Final value of the function: 0.0000000000
+Execution time: 0.067409 secondi
+Final norm of the gradient: 1.44e-11
+Total number of backtracking: 1
+
+Starting point: [-1.200000, 1.000000]
+Number of iterations: 8
+Final value of the function: 0.0000000000
+Execution time: 0.004554 secondi
+Final norm of the gradient: 1.44e-11
+Total number of backtracking: 1
+
+
+== RISULTS FOR NELDER-MEAD ==
+
+Starting point: [1.200000, 1.200000]
+Number of iterations: 98
+Final value of the function: 0.0000000000
+Execution time: 0.131912 secondi
+
+Starting point: [-1.200000, 1.000000]
+Number of iterations: 202
+Final value of the function: 0.0000000000
+Execution time: 0.093538 secondi

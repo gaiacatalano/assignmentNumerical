@@ -8,7 +8,11 @@ addpath('../');
 % Seed
 rng(349131);
 
+<<<<<<< HEAD
 % Dimension  
+=======
+% Dimension
+>>>>>>> 0cef71830b752cb760f18f261c67e9d5ab506dd4
 d = 3:1:3; 
 num_points = 10;
 
