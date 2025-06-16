@@ -3,14 +3,14 @@
 Starting point: [1.200000, 1.200000]
 Number of iterations: 8
 Final value of the function: 0.0000000000
-Execution time: 0.004696 secondi
+Execution time: 0.067409 secondi
 Final norm of the gradient: 1.44e-11
 Total number of backtracking: 1
 
 Starting point: [-1.200000, 1.000000]
 Number of iterations: 8
 Final value of the function: 0.0000000000
-Execution time: 0.001206 secondi
+Execution time: 0.004554 secondi
 Final norm of the gradient: 1.44e-11
 Total number of backtracking: 1
 
@@ -20,9 +20,9 @@ Total number of backtracking: 1
 Starting point: [1.200000, 1.200000]
 Number of iterations: 98
 Final value of the function: 0.0000000000
-Execution time: 0.040635 secondi
+Execution time: 0.131912 secondi
 
 Starting point: [-1.200000, 1.000000]
 Number of iterations: 202
 Final value of the function: 0.0000000000
-Execution time: 0.102380 secondi
+Execution time: 0.093538 secondi

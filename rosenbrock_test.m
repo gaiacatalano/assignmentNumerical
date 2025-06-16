@@ -20,7 +20,7 @@ view(45, 30);
 hold on;
 plot3(1, 1, f_rosenbrock([1; 1]), 'ro', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
 
-% Starting points used for the test
+% Starting points
 x0_a = [1.2; 1.2];
 x0_b = [-1.2; 1];
 
@@ -28,15 +28,15 @@ x0_b = [-1.2; 1];
 tol = 1e-8;
 kmax = 2000;
 
+fid = fopen('output_rosenbrock.txt', 'w');
+
+% NELDER-MEAD
+
 % Nelder-Mead parameters
 rho_nm = 1;
 chi_nm = 2;
 gamma_nm = 0.5;
 sigma_nm = 0.5;
-
-fid = fopen('output_rosenbrock.txt', 'w');
-
-% NELDER-MEAD
 
 tic;
 [simplex_nm_a, k_nm_a] = nelder_mead(x0_a, f_rosenbrock, rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
@@ -108,28 +108,5 @@ fprintf(fid, "Starting point: [%f, %f]\n", x0_b(1), x0_b(2));
 fprintf(fid, "Number of iterations: %d\n", k_nm_b);
 fprintf(fid, "Final value of the function: %.10f\n", f_rosenbrock(simplex_nm_b(:,1)));
 fprintf(fid, "Execution time: %.6f secondi\n", time_nm_b);
-
-methods = {'Newton x0_a', 'Newton x0_b', 'Nelder-Mead x0_a', 'Nelder-Mead x0_b'};
-
-times = [time_mn_a, time_mn_b, time_nm_a, time_nm_b];
-
-figure;
-bar(times);
-set(gca, 'XTickLabel', methods);
-ylabel('Tempo di esecuzione (s)');
-title('Confronto dei tempi di esecuzione');
-grid on;
-
-iterations = [k_a, k_b, k_nm_a, k_nm_b];  % Nelder-Mead ha fisso kmax nel tuo caso
-
-figure;
-bar(iterations);
-set(gca, 'XTickLabel', methods);
-ylabel('Numero di iterazioni');
-title('Confronto del numero di iterazioni');
-grid on;
-
-
-
 
 fclose(fid);
