@@ -19,7 +19,7 @@ function hess = discrete_boundary_value_hess(x)
         % xk = x(k+1);
         % xkp1 = x(k+2);
 
-        fk = (2*x(k+1)-x(k)-x(k+2) + (h^2 * (x(k+1) + k*h + 1)^3)/2)^2;
+        fk = 2*x(k+1)-x(k)-x(k+2) + (h^2 * (x(k+1) + k*h + 1)^3)/2;
         d0(k) = 2*(2 + 3/2 * h^2 * (x(k+1) + k*h + 1)^2)^2 + 2*fk*(3*h^2 * (x(k+1) + k*h + 1));
 
         % df_dxkm1 = -1;

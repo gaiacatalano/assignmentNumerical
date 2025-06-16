@@ -1,6 +1,6 @@
 function [xk, fk, gradfk_norm, k, xseq, btseq] = ...
     modified_newton_bcktrck_preconditioning(x0, f, gradf, Hessf, ...
-    kmax, tolgrad, c1, rho, btmax)
+    kmax, tolgrad, c1, rho, btmax, hstep, hstep_i)
 
 % Function that performs the Newton optimization method, using
 % backtracking strategy for the step-length selection.
@@ -15,14 +15,23 @@ btseq = zeros(1, kmax);
 
 xk = x0;
 fk = f(xk);
-gradfk = gradf(xk);
+if nargin == 9
+    gradfk = gradf(xk);
+else
+    gradfk = gradf(xk, hstep, hstep_i);
+end
 k = 0;
 gradfk_norm = norm(gradfk);
 
 %delta = sqrt(eps);
 
 while k < kmax && gradfk_norm >= tolgrad
-    Hessfk = Hessf(xk);
+    if nargin == 9
+        Hessfk = Hessf(xk);
+    else
+        Hessfk = Hessf(xk, hstep, hstep_i);
+    end
+    
     beta = norm(Hessfk, 'fro');
 
     % Check diagonale: tutti gli a_ii > 0?
@@ -101,7 +110,11 @@ while k < kmax && gradfk_norm >= tolgrad
     % Update xk, fk, gradfk_norm
     xk = xnew;
     fk = fnew;
-    gradfk = gradf(xk);
+    if nargin == 9
+        gradfk = gradf(xk);
+    else
+        gradfk = gradf(xk, hstep, hstep_i);
+    end
     gradfk_norm = norm(gradfk);
     
     % Increase the step by one

@@ -1,6 +1,10 @@
-function H = chained_rosenbrock_hess_fd(x, h)
+function H = chained_rosenbrock_hess_fd(x, h, bool_hstep_i)
     if nargin < 2
         h = 1e-5;
+    end
+
+    if bool_hstep_i==1
+        hstep_i = abs(x)*h;
     end
 
     n = length(x);
@@ -9,6 +13,11 @@ function H = chained_rosenbrock_hess_fd(x, h)
     dm1 = zeros(n,1);
 
     for i = 1:n
+
+        if bool_hstep_i==1
+            h = hstep_i(i);
+        end
+
         %xi = x(i);        
         if i ~= n
             %xip1 = x(i+1);

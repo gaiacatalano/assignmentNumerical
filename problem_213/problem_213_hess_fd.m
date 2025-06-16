@@ -1,9 +1,13 @@
-function H = problem_213_hess_fd(x, hstep)
+function H = problem_213_hess_fd(x, hstep, bool_hstep_i)
 % per l'hessiana uso la differenza centrata prchè più precisa per stimare
 % la curvatura
 
     if nargin < 2
         hstep = 1e-5;
+    end
+
+    if bool_hstep_i==1
+        hstep_i= abs(x)*hstep;
     end
 
     n = length(x);
@@ -27,19 +31,37 @@ function H = problem_213_hess_fd(x, hstep)
 
         fi = 2*x(i+1) + h^2*(x(i+1) + sin(x(i+1))) - x(i) - x(i+2);
 
-        d0(i) = 4 + h^4*(hstep^2 + sin(x(i+1))^2*cos(hstep)^2 + cos(x(i+1))^2*sin(hstep)^2 + sin(x(i+1))^2 +2*hstep*cos(x(i+1))*sin(hstep) ...
-                    - 2*sin(x(i+1))^2*cos(hstep))/(hstep^2) + 4*h^2*(hstep + cos(x(i+1))*sin(hstep))/hstep + 2*fi*(h^2*(sin(x(i+1))*cos(h) - sin(x(i+1))))/(hstep^2);
-        plus = h^4/2*((hstep + sin(x(i+1) + hstep) - sin(x(i+1)))^2)/(hstep^2) - h^2*(hstep + sin(x(i+1) + hstep) - sin(x(i+1)))/hstep ...
-                    + h^2*(fi*(hstep + sin(x(i+1) + hstep) - sin(x(i+1))))/(hstep^2);
+        if bool_hstep_i == 0
+            d0(i) = 4 + (h^4)/(2*hstep^2)*(2*hstep^2 + sin(x(i+1) + hstep)^2 + sin(x(i+1)-hstep)^2 + 2*sin(x(i+1))^2 - 2*sin(x(i+1)+hstep)*sin(x(i+1)) - 2*sin(x(i+1)-hstep)*sin(x(i+1)) + 2*hstep*(sin(x(i+1)+hstep) - sin(x(i+1)-hstep))) ...
+                + (h^2)*(2/hstep*(2*hstep + sin(x(i+1)+hstep) - sin(x(i+1)-hstep)) + fi/(hstep^2) * (sin(x(i+1)+hstep) + sin(x(i+1)-hstep)-2*sin(x(i+1))));
+        else
+            d0(i) = 4 + (h^4) / (2 * hstep_i(i)^2) * (2 * hstep_i(i)^2 + sin(x(i+1) + hstep_i(i))^2 + sin(x(i+1) - hstep_i(i))^2 + 2 * sin(x(i+1))^2 - 2 * sin(x(i+1) + hstep_i(i)) * sin(x(i+1)) - 2 * sin(x(i+1) - hstep_i(i)) * sin(x(i+1)) + 2 * hstep_i(i) * (sin(x(i+1) + hstep_i(i)) - sin(x(i+1) - hstep_i(i)))) ...
+                + h^2 * ((2 / hstep_i(i)) * (2 * hstep_i(i) + sin(x(i+1) + hstep_i(i)) - sin(x(i+1) - hstep_i(i))) + (fi / hstep_i(i)^2) * (sin(x(i+1) + hstep_i(i)) + sin(x(i+1) - hstep_i(i)) - 2 * sin(x(i+1))));
+        end
+
+        %d0(i) = 4 + h^4*(hstep^2 + sin(x(i+1))^2*cos(hstep)^2 + cos(x(i+1))^2*sin(hstep)^2 + sin(x(i+1))^2 +2*hstep*cos(x(i+1))*sin(hstep) ...
+        %            - 2*sin(x(i+1))^2*cos(hstep))/(hstep^2) + 4*h^2*(hstep + cos(x(i+1))*sin(hstep))/hstep + 2*fi*(h^2*(sin(x(i+1))*cos(h) - sin(x(i+1))))/(hstep^2);
+        %plus = h^4/2*((hstep + sin(x(i+1) + hstep) - sin(x(i+1)))^2)/(hstep^2) - h^2*(hstep + sin(x(i+1) + hstep) - sin(x(i+1)))/hstep ...
+        %            + h^2*(fi*(hstep + sin(x(i+1) + hstep) - sin(x(i+1))))/(hstep^2);
         
         if i ~= 1
             d0(i) = d0(i) + 1;
-            dm1(i-1) = dm1(i-1) + plus;
+
+            % if bool_hstep_i==0
+            %     dm1(i-1) = dm1(i-1) + plus;
+            % else
+            %     dm1(i-1)
+            % end
         end
             
         if i ~= n
             d0(i) = d0(i) + 1;
-            dm1(i) = plus;
+
+            if bool_hstep_i==0
+                dm1(i) = (h^2)/(hstep)*(sin(x(i+1)) + sin(x(i+2)) - sin(x(i+1)+hstep) - sin(x(i+2)+hstep) - 2*hstep) -4;
+            else
+                dm1(i) = (h^2)/(hstep_i(i))*(sin(x(i+1)) - sin(x(i+1)+hstep_i(i)) - hstep_i(i)) + (h^2)/(hstep_i(i+1))*(sin(x(i+2)) - sin(x(i+2)+hstep_i(i+1)) - hstep_i(i+1)) - 4;
+            end
         end
     
         if i < n-1

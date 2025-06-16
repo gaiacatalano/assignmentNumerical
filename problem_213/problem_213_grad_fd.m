@@ -1,6 +1,10 @@
-function g = problem_213_grad_fd(x, hstep)
+function g = problem_213_grad_fd(x, hstep, bool_hstep_i)
     if nargin < 2
         hstep = 1e-6;
+    end
+
+    if bool_hstep_i == 1
+        hstep_i = abs(x)*hstep;
     end
 
     n = length(x);
@@ -13,6 +17,10 @@ function g = problem_213_grad_fd(x, hstep)
         xi = x_ext(i+1);
         xip1 = x_ext(i+2);
         fx=0;
+
+        if bool_hstep_i==1
+            hstep = hstep_i(i);
+        end
 
         if i > 2
             xim2 = x_ext(i-1);

@@ -1,6 +1,10 @@
-function g = chained_rosenbrock_grad_fd(x, h)
+function g = chained_rosenbrock_grad_fd(x, h, bool_hstep_i)
     if nargin < 2
         h = 1e-6;
+    end
+
+    if bool_hstep_i == 1
+        hstep_i = abs(x)*h;
     end
 
     n = length(x);
@@ -10,6 +14,10 @@ function g = chained_rosenbrock_grad_fd(x, h)
     for i = 1:n
         %fx = 0;
         xi=x(i);
+
+        if bool_hstep_i == 1
+            h = hstep_i(i);
+        end
 
         % evito di calcolare tutt F(x) n volte ma calcolo solo i due valori
         % f_i che mi servono

@@ -15,7 +15,7 @@ function grad = discrete_boundary_value_grad(x)
         xk = x(k+1);
         xkp1 = x(k+2);
 
-        fk = (2*xk-xkm1-xkp1 + (h^2 * (xk + k*h + 1)^3)/2)^2;
+        fk = 2*xk-xkm1-xkp1 + (h^2 * (xk + k*h + 1)^3)/2;
 
         df_dxkm1 = -1;
         df_dxk   = 2 + 3/2 * h^2 * (xk + k*h + 1)^2;
