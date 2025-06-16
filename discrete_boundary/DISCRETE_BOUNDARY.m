@@ -9,7 +9,7 @@ addpath('../');
 rng(349131);
 
 % Dimension
-d = 3:1:5; 
+d = 3:1:3; 
 num_points = 10;
 
 % Stopping parameters

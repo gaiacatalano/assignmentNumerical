@@ -1,4 +1,4 @@
-function[simplex] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
+function[simplex, k] = nelder_mead(x0, fun, rho, chi, gamma, sigma, kmax, tol)
 
     % Parametro di perturbazione
     delta = 0.05 * norm(x0);

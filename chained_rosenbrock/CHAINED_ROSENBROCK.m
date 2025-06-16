@@ -39,7 +39,7 @@ for p=1:length(d)
 
     % Backtracking parameters
     rho = 0.5;
-    c = 10e-4;
+    %c = 10e-4;
 
     % Newton parameters
     tolgrad = 1e-5;
