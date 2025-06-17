@@ -1,7 +1,4 @@
 function g = chained_rosenbrock_grad_fd(x, h, bool_hstep_i)
-    if nargin < 2
-        h = 1e-6;
-    end
 
     if bool_hstep_i == 1
         hstep_i = abs(x)*h;
@@ -13,7 +10,7 @@ function g = chained_rosenbrock_grad_fd(x, h, bool_hstep_i)
     % Funzione locale f_i(x): solo i=2 to n
     for i = 1:n
         %fx = 0;
-        xi=x(i);
+        %xi=x(i);
 
         if bool_hstep_i == 1
             h = hstep_i(i);
@@ -23,18 +20,25 @@ function g = chained_rosenbrock_grad_fd(x, h, bool_hstep_i)
         % f_i che mi servono
 
         %calcolo di f_i
-        if i >= 2
-            xim1 = x(i-1);
-            g(i) = g(i) + 100*(h-2*(xim1^2 - xi));  %già tutto diviso per h
-            
+        % if i >= 2
+        %     xim1 = x(i-1);
+        %     g(i) = g(i) + 100*(h-2*(xim1^2 - xi));  %già tutto diviso per h
+        % 
+        % end
+        % 
+        % %calcolo di f_{i+1}
+        % if i <= n - 1
+        %     xip1   = x(i+1);
+        %     g(i) = g(i) + 100*(h^3 + 4*xi^2*h + 4*xi*h^2 + 2*(h+2*xi)*(xi^2-xip1)) +h +2*(xi-1); %già tutto diviso per h
+        % end
+        
+        if i == 1
+            g(i) = 400*x(i)*(h^2 + x(i)^2 - x(i+1)) + 2*(x(i) - 1);
+        elseif i == n
+            g(i) = -200*(x(i-1)^2 - x(i));
+        else
+            g(i) = 400*x(i)*(h^2 + x(i)^2 - x(i+1)) - 200*(x(i-1)^2 - x(i)) + 2*(x(i) - 1);
         end
-
-        %calcolo di f_{i+1}
-        if i <= n - 1
-            xip1   = x(i+1);
-            g(i) = g(i) + 100*(h^3 + 4*xi^2*h + 4*xi*h^2 + 2*(h+2*xi)*(xi^2-xip1)) +h +2*(xi-1); %già tutto diviso per h
-        end
-
         
 
     end

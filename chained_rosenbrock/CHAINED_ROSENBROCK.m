@@ -43,7 +43,7 @@ for p=1:length(d)
 
     % Newton parameters
     tolgrad = 1e-5;
-    c1 = 1e-8;
+    c1 = 1e-4;
     btmax = 40;
 
     % con il mio x_bar

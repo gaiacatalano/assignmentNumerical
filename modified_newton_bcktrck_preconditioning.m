@@ -78,10 +78,11 @@ while k < kmax && gradfk_norm >= tolgrad
     n = length(xk);
     M = spdiags(M_diag, 0, n, n);
     [pk, ~] = pcg(B_k, -gradfk, 1e-6, kmax, M);
+    %[pk, ~,  ~,  ~,  ~] = pcg(B_k, -gradfk);
 
     
     % Reset the value of alpha
-    alpha = 1;
+    alpha = 0.5;
     
     % Compute the candidate new xk
     xnew = xk + alpha * pk;

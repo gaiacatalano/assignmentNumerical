@@ -14,7 +14,14 @@ num_points = 10;
 
 % Stopping parameters
 tol = 1e-5;
-kmax = 1000;
+kmax = 30000;
+
+% treashold norm_grad
+epsilon = 1e-4;
+count_success_newton = 0;
+count_failure_newton = 0;
+count_success_nelder = 0;
+count_failure_nelder = 0;
 
 % Chiamo le funzioni
 
@@ -68,6 +75,15 @@ for p=1:length(d)
             kmax, tolgrad, c1, rho, btmax);
         tempo_mn = toc;
         x_newton_problem_213 = xk3;
+
+        if gradfk_norm3 < epsilon
+            count_success_newton = count_success_newton + 1;
+        else
+            count_failure_newton = count_failure_newton + 1;
+        end
+
+        %r_k = log(norm(problem_213_grad(k))/norm(problem_213_grad(k+1))) / log(norm(grad_km1)/norm(grad_km2));
+
         
         tic;
         [xk3_prec, fk3_prec, gradfk_norm3_prec, k3_prec, xseq3_prec, btseq3_prec] = ...
@@ -76,6 +92,12 @@ for p=1:length(d)
             kmax, tolgrad, c1, rho, btmax);
         tempo_mn_prec = toc;
         x_newton_problem_213_prec = xk3_prec;
+
+        if gradfk_norm3_prec < epsilon
+            count_success_newton = count_success_newton + 1;
+        else
+            count_failure_newton = count_failure_newton + 1;
+        end
     
         tic;
         [xk3_fd, fk3_fd, gradfk_norm3_fd, k3_fd, xseq3_fd, btseq3_fd] = ...
@@ -84,6 +106,12 @@ for p=1:length(d)
             kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
         tempo_mn_fd = toc;
         x_newton_problem_213_fd = xk3_fd;
+
+        if gradfk_norm3_fd < epsilon
+            count_success_newton = count_success_newton + 1;
+        else
+            count_failure_newton = count_failure_newton + 1;
+        end
     
         tic;
         [xk3_fd_prec, fk3_fd_prec, gradfk_norm3_fd_prec, k3_fd_prec, xseq3_fd_prec, btseq3_fd_prec] = ...
@@ -92,6 +120,12 @@ for p=1:length(d)
             kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
         tempo_mn_fd_prec = toc;
         x_newton_problem_213_fd_prec = xk3_fd_prec;
+
+        if gradfk_norm3_fd_prec < epsilon
+            count_success_newton = count_success_newton + 1;
+        else
+            count_failure_newton = count_failure_newton + 1;
+        end
         
         fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
         fprintf(fid, "n = %d |norma2 di x= %.2e | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, norm(x_newton_problem_213), fk3, k3, gradfk_norm3);
@@ -112,24 +146,48 @@ for p=1:length(d)
                 modified_newton_bcktrck(x0_i, problem_213_fun, ...
                 problem_213_grad , problem_213_hess, ...
                 kmax, tolgrad, c1, rho, btmax);
+
+            if gradfk_norm_rand < epsilon
+                count_success_newton = count_success_newton + 1;
+            else
+                count_failure_newton = count_failure_newton + 1;
+            end
     
             % Newton precondizionato
             [xk_rand_prec, fk_rand_prec, gradfk_norm_rand_prec, k_rand_prec] = ...
                 modified_newton_bcktrck_preconditioning(x0_i, problem_213_fun, ...
                 problem_213_grad , problem_213_hess, ...
                 kmax, tolgrad, c1, rho, btmax);
+
+            if gradfk_norm_rand_prec < epsilon
+                count_success_newton = count_success_newton + 1;
+            else
+                count_failure_newton = count_failure_newton + 1;
+            end
     
             [xk_rand_fd, fk_rand_fd, gradfk_norm_rand_fd, k_rand_fd, xseq_fd, btseq_fd] = ...
                 modified_newton_bcktrck(x0_i, problem_213_fun, ...
                 problem_213_grad_fd , problem_213_hess_fd, ...
                 kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
             %x_newton_problem_213_fd = xk_fd;
+
+            if gradfk_norm_rand_fd < epsilon
+                count_success_newton = count_success_newton + 1;
+            else
+                count_failure_newton = count_failure_newton + 1;
+            end
     
             [xk_rand_fd_prec, fk_rand_fd_prec, gradfk_norm_rand_fd_prec, k_rand_fd_prec, xseq_fd_prec, btseq_fd_prec] = ...
                 modified_newton_bcktrck_preconditioning(x0_i, problem_213_fun, ...
                 problem_213_grad_fd , problem_213_hess_fd, ...
                 kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
             %x_newton_problem_213_fd_prec = xk_fd_prec;
+
+            if gradfk_norm_rand_fd_prec < epsilon
+                count_success_newton = count_success_newton + 1;
+            else
+                count_failure_newton = count_failure_newton + 1;
+            end
     
             fprintf(fid, "n = %d | Punto #%d |norma2 di x= %.2e | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
                 n, i, norm(xk_rand), fk_rand, k_rand, gradfk_norm_rand);
@@ -142,6 +200,9 @@ for p=1:length(d)
     
         end
     end
+
+    fprintf(fid, "n = %d | number of successes of modified newton: %.4f\n", n, count_success_newton);
+    fprintf(fid, "n = %d |number of failures of modified newton: %.4f\n",n,  count_failure_newton);
 
 end
 
@@ -166,6 +227,14 @@ for n = [10,25,50]
     tic;
     simplex_problem_213 = nelder_mead_n(x_bar_problem_213, problem_213_fun, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
     tempo_nelder_mead = toc; 
+    D = max(pdist(simplex_problem_213'));
+    if D < epsilon
+        count_success_nelder = count_success_nelder +1;
+    else
+        count_failure_nelder = count_failure_newton + 1;
+    end
+    
+
     % Restituisco valore migliore del simplesso
     simplex_problem_213 = simplex_problem_213(:,1);
 
@@ -178,12 +247,24 @@ for n = [10,25,50]
         simplex_i = nelder_mead_n(x0_i, problem_213_fun, n , ...
             rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
 
+        Di = max(pdist(simplex_i'));
+        if Di < epsilon
+            count_success_nelder = count_success_nelder +1;
+        else
+            count_failure_nelder = count_failure_newton + 1;
+        end
+
         x_best_i = simplex_i(:,1);
 
         fprintf(fid, "Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, problem_213_fun(x_best_i));
     end
+
+    fprintf(fid, "n = %d | number of successes of nelder mead: %.4f\n", n, count_success_nelder);
+    fprintf(fid, "n = %d | number of failures of nelder mead: %.4f\n", n, count_failure_nelder);
     
 end
+
+
 
 fclose(fid);
 

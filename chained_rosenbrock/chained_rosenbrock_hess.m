@@ -5,16 +5,18 @@ function hess = chained_rosenbrock_hess(x)
     d0 = zeros(n,1);
     dm1 = zeros(n,1);
 
-    for i = 1:n
+    for i = 2:n
 
-        if i ~= 1
-            d0(i) = d0(i) + 200;
-            dm1(i) = -400*x(i-1);
-        end
+        % if i ~= 1
+        %     d0(i) = d0(i) + 200;
+        %     dm1(i) = -400*x(i-1);
+        % end
 
         if i ~= n
-            d0(i) = d0(i) + 400*(3*x(i)^2 - x(i+1)) + 2;
+            %d0(i) = d0(i) + 400*(3*x(i)^2 - x(i+1)) + 2;
+            d0(i) = 400*(3*x(i)^2 - x(i+1)) + 202;
         end
+        dm1(i-1) = -400*x(i-1);
 
         % xim1 = x(i-1);
         % xi = x(i);
@@ -30,6 +32,9 @@ function hess = chained_rosenbrock_hess(x)
         
 
     end
+
+    d0(1) = 400*(3*x(1)^2 - x(2)) + 2;
+    d0(n) = 200;
 
     hess = spdiags([dm1, d0, [0; dm1(1:end-1)]], [-1 0 1], n, n);
     hess = 0.5*(hess + hess');

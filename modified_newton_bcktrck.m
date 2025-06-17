@@ -97,7 +97,7 @@ while k < kmax && gradfk_norm >= tolgrad
     % end
     % tau_k = max(0, delta-lambda_min);
 
-    E_k = tau_k*speye(size(Hessfk,1));
+    E_k = tau_k*speye(size(Hessfk));
     B_k = Hessfk + E_k;
     pk = - B_k\gradfk;
     
@@ -110,7 +110,7 @@ while k < kmax && gradfk_norm >= tolgrad
     %[pk, ~, ~, iterk, ~] = pcg(B_k, -gradfk);
     
     % Reset the value of alpha
-    alpha = 1;
+    alpha = 0.5;
     
     % Compute the candidate new xk
     xnew = xk + alpha * pk;
