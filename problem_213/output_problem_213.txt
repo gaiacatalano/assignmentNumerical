@@ -1,29 +1,10 @@
 Modified Newton method
-Tempo di esecuzione Modified Newton: 21.7442
-n = 1000 |norma2 di x= 3.15e+01 | f(x) = 2.0301e-04 | iter = 30000 | norm grad = 2.85e-04
-Tempo di esecuzione Modified Newton con precondizionamento: 32.8033
-n = 1000 |norma2 di x= 3.15e+01 | f(x) = 2.0301e-04 | iter = 30000 | norm grad = 2.85e-04
-Tempo di esecuzione Modified Newton con differenze finite: 133.0093
-n = 1000 |norma2 di x= 3.14e+01 | f(x) = 3.2246e-01 | iter = 30000 | norm grad = 1.62e+00
-Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: 137.0254
-n = 1000 |norma2 di x= 3.14e+01 | f(x) = 3.2246e-01 | iter = 30000 | norm grad = 1.62e+00
-n = 1000 | Punto #1 |norma2 di x= 3.12e+01 | f(x) = 4.9630e-04 | iter = 30000 (norm grad = 5.66e-04)
-n = 1000 | Punto #1 |norma2 di x= 3.12e+01 | f(x) = 4.9630e-04 | iter = 30000 (norm grad = 5.66e-04)
-n = 1000 | Punto #1 |norma2 di x= 2.17e+01 | f(x) = 5.7411e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #1 |norma2 di x= 3.12e+01 | f(x) = 5.7411e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #2 |norma2 di x= 3.21e+01 | f(x) = 9.6158e-04 | iter = 30000 (norm grad = 7.14e-04)
-n = 1000 | Punto #2 |norma2 di x= 3.21e+01 | f(x) = 9.6158e-04 | iter = 30000 (norm grad = 7.14e-04)
-n = 1000 | Punto #2 |norma2 di x= 2.09e+01 | f(x) = 5.7309e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #2 |norma2 di x= 3.21e+01 | f(x) = 5.7309e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #3 |norma2 di x= 3.20e+01 | f(x) = 7.2468e-04 | iter = 30000 (norm grad = 5.84e-04)
-n = 1000 | Punto #3 |norma2 di x= 3.20e+01 | f(x) = 7.2468e-04 | iter = 30000 (norm grad = 5.84e-04)
-n = 1000 | Punto #3 |norma2 di x= 2.49e+01 | f(x) = 5.8266e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #3 |norma2 di x= 3.20e+01 | f(x) = 5.8266e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #4 |norma2 di x= 3.11e+01 | f(x) = 5.1847e-04 | iter = 30000 (norm grad = 5.09e-04)
-n = 1000 | Punto #4 |norma2 di x= 3.11e+01 | f(x) = 5.1847e-04 | iter = 30000 (norm grad = 5.09e-04)
-n = 1000 | Punto #4 |norma2 di x= 1.84e+01 | f(x) = 5.8009e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #4 |norma2 di x= 3.11e+01 | f(x) = 5.8009e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #5 |norma2 di x= 3.16e+01 | f(x) = 5.6647e-04 | iter = 30000 (norm grad = 6.11e-04)
-n = 1000 | Punto #5 |norma2 di x= 3.16e+01 | f(x) = 5.6647e-04 | iter = 30000 (norm grad = 6.11e-04)
-n = 1000 | Punto #5 |norma2 di x= 1.89e+01 | f(x) = 5.7370e-01 | iter = 30000 (norm grad = 9.47e-01)
-n = 1000 | Punto #5 |norma2 di x= 3.16e+01 | f(x) = 5.7370e-01 | iter = 30000 (norm grad = 9.47e-01)
+n = 1000
+Execution time Modified Newton: 3.0409
+n = 1000 | 2-norm of x = 3.16e+01 | f(x) = 1.5345e-03 | iter = 2000 | grad norm = 3.02e-03
+Execution time Modified Newton with preconditioning: 3.0016
+n = 1000 | 2-norm of x = 3.16e+01 | f(x) = 1.5345e-03 | iter = 2000 | grad norm = 3.02e-03
+Execution time Modified Newton with finite differences: 6.4527
+n = 1000 | 2-norm of x = 3.14e+01 | f(x) = 3.2246e-01 | iter = 2000 | grad norm = 1.62e+00
+Execution time Modified Newton with finite differences and preconditioning: 6.4232
+n = 1000 | 2-norm of x = 3.14e+01 | f(x) = 3.2246e-01 | iter = 2000 | grad norm = 1.62e+00

@@ -1,18 +1,18 @@
 == RESULTS FOR MODIFIED NEWTON WITH BACKTRACKING ==
 
 Starting point: [1.200000, 1.200000]
-Number of iterations: 8
+Number of iterations: 37
 Final value of the function: 0.0000000000
-Execution time: 0.067409 secondi
-Final norm of the gradient: 1.44e-11
-Total number of backtracking: 1
+Execution time: 0.076556 secondi
+Final norm of the gradient: 6.72e-09
+Total number of backtracking: 0
 
 Starting point: [-1.200000, 1.000000]
-Number of iterations: 8
+Number of iterations: 37
 Final value of the function: 0.0000000000
-Execution time: 0.004554 secondi
-Final norm of the gradient: 1.44e-11
-Total number of backtracking: 1
+Execution time: 0.005114 secondi
+Final norm of the gradient: 6.72e-09
+Total number of backtracking: 0
 
 
 == RISULTS FOR NELDER-MEAD ==
@@ -20,9 +20,9 @@ Total number of backtracking: 1
 Starting point: [1.200000, 1.200000]
 Number of iterations: 98
 Final value of the function: 0.0000000000
-Execution time: 0.131912 secondi
+Execution time: 0.168619 secondi
 
 Starting point: [-1.200000, 1.000000]
 Number of iterations: 202
 Final value of the function: 0.0000000000
-Execution time: 0.093538 secondi
+Execution time: 0.071708 secondi

@@ -1,14 +1,12 @@
-% Intervallo di valori per x1 e x2
 x1 = linspace(-2, 2, 100);
 x2 = linspace(-1, 3, 100);
 
-% Creazione della griglia
+% Grid for x_1 and x_2
 [X1, X2] = meshgrid(x1, x2);
 
-% Definizione della funzione di Rosenbrock
 F = 100 * (X1.^2 - X2).^2 + (X1 - 1).^2;
 
-% Plot della superficie
+% Plot
 figure;
 surf(X1, X2, F)
 xlabel('x_1')

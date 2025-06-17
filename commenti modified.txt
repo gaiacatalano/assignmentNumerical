@@ -1,0 +1,25 @@
+% Function that performs the Newton optimization method, using
+% backtracking strategy for the step-length selection.
+
+% INPUTS:
+% x0 = n-dimensional column vector;
+% f = function handle that describes a function R^n->R;
+% gradf = function handle that describes the gradient of f;
+% Hessf = function handle that describes the Hessian of f;
+% kmax = maximum number of iterations permitted;
+% tolgrad = value used as stopping criterion w.r.t. the norm of the
+% gradient;
+% c1 = ﻿the factor of the Armijo condition that must be a scalar in (0,1);
+% rho = ﻿fixed factor, lesser than 1, used for reducing alpha0;
+% btmax = ﻿maximum number of steps for updating alpha during the 
+% backtracking strategy.
+
+% OUTPUTS:
+% xk = the last x computed by the function;
+% fk = the value f(xk);
+% gradfk_norm = value of the norm of gradf(xk)
+% k = index of the last iteration performed
+% xseq = n-by-k matrix where the columns are the elements xk of the 
+% sequence
+% btseq = 1-by-k vector where elements are the number of backtracking
+% iterations at each optimization step.

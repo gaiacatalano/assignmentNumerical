@@ -2,29 +2,26 @@ clc
 clear
 close all
 
-% Aggiungo quello che sta nella cartella fuori al path
 addpath('../'); 
 
 % Seed
 rng(349131);
 
-% Dimension
-d = 3:1:3; 
+d = 3:1:5; 
 num_points = 10;
 
 % Stopping parameters
-tol = 1e-5;
-kmax = 30000;
+tol = 1e-06;
+kmax = 10000;
 
-% treashold norm_grad
+% Treashold norm_grad
 epsilon = 1e-4;
 count_success_newton = 0;
 count_failure_newton = 0;
 count_success_nelder = 0;
 count_failure_nelder = 0;
 
-% Chiamo le funzioni
-
+% Function recall
 problem_213_fun = @problem_213_fvalue;
 problem_213_grad = @problem_213_grad;
 problem_213_hess = @problem_213_hess;
@@ -40,21 +37,18 @@ fprintf(fid, "Modified Newton method\n");
 
 for p=1:length(d)
 
-    fprintf('Sto stampando risultati per p = %d\n', p);
+    fprintf('Displaying results for p = %d\n', p);
 
     n = 10^d(p);
-    %fprintf(fid, "n = %d\n", n);
-
-    % Backtracking parameters
-    rho = 0.5;
-    c = 1e-4;
+    fprintf(fid, "n = %d\n", n);
 
     % Newton parameters
-    tolgrad = 1e-5;
-    c1 = 1e-8;
-    btmax = 60;
+    tolgrad = 1e-06;
+    rho = 0.5;
+    c1 = 1e-4;
+    btmax = 1000;
 
-    % con il mio x_bar
+    % First starting point x_bar
     x_bar_problem_213 = ones(n,1);
 
     hstep_i = 0;
@@ -70,7 +64,7 @@ for p=1:length(d)
            
         tic;
         [xk3, fk3, gradfk_norm3, k3, xseq3, btseq3] = ...
-            modified_newton_bcktrck(x_bar_problem_213, problem_213_fun, ...
+            modified_newton_backtracking(x_bar_problem_213, problem_213_fun, ...
             problem_213_grad , problem_213_hess, ...
             kmax, tolgrad, c1, rho, btmax);
         tempo_mn = toc;
@@ -81,13 +75,10 @@ for p=1:length(d)
         else
             count_failure_newton = count_failure_newton + 1;
         end
-
-        %r_k = log(norm(problem_213_grad(k))/norm(problem_213_grad(k+1))) / log(norm(grad_km1)/norm(grad_km2));
-
         
         tic;
         [xk3_prec, fk3_prec, gradfk_norm3_prec, k3_prec, xseq3_prec, btseq3_prec] = ...
-            modified_newton_bcktrck_preconditioning(x_bar_problem_213, problem_213_fun, ...
+            modified_newton_backtracking_preconditioning(x_bar_problem_213, problem_213_fun, ...
             problem_213_grad , problem_213_hess, ...
             kmax, tolgrad, c1, rho, btmax);
         tempo_mn_prec = toc;
@@ -101,7 +92,7 @@ for p=1:length(d)
     
         tic;
         [xk3_fd, fk3_fd, gradfk_norm3_fd, k3_fd, xseq3_fd, btseq3_fd] = ...
-            modified_newton_bcktrck(x_bar_problem_213, problem_213_fun, ...
+            modified_newton_backtracking(x_bar_problem_213, problem_213_fun, ...
             problem_213_grad_fd , problem_213_hess_fd, ...
             kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
         tempo_mn_fd = toc;
@@ -115,7 +106,7 @@ for p=1:length(d)
     
         tic;
         [xk3_fd_prec, fk3_fd_prec, gradfk_norm3_fd_prec, k3_fd_prec, xseq3_fd_prec, btseq3_fd_prec] = ...
-            modified_newton_bcktrck_preconditioning(x_bar_problem_213, problem_213_fun, ...
+            modified_newton_backtracking_preconditioning(x_bar_problem_213, problem_213_fun, ...
             problem_213_grad_fd , problem_213_hess_fd, ...
             kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
         tempo_mn_fd_prec = toc;
@@ -127,23 +118,23 @@ for p=1:length(d)
             count_failure_newton = count_failure_newton + 1;
         end
         
-        fprintf(fid, "Tempo di esecuzione Modified Newton: %.4f\n", tempo_mn);
-        fprintf(fid, "n = %d |norma2 di x= %.2e | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, norm(x_newton_problem_213), fk3, k3, gradfk_norm3);
-        fprintf(fid, "Tempo di esecuzione Modified Newton con precondizionamento: %.4f\n", tempo_mn_prec);
-        fprintf(fid, "n = %d |norma2 di x= %.2e | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, norm(x_newton_problem_213_prec), fk3_prec, k3_prec, gradfk_norm3_prec);
-        fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite: %.4f\n", tempo_mn_fd);
-        fprintf(fid, "n = %d |norma2 di x= %.2e | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, norm(x_newton_problem_213_fd), fk3_fd, k3_fd, gradfk_norm3_fd);
-        fprintf(fid, "Tempo di esecuzione Modified Newton con differenze finite e precondizionamento: %.4f\n", tempo_mn_fd_prec);
-        fprintf(fid, "n = %d |norma2 di x= %.2e | f(x) = %.4e | iter = %d | norm grad = %.2e\n", n, norm(x_newton_problem_213_fd_prec), fk3_fd_prec, k3_fd_prec, gradfk_norm3_fd_prec);
-    
-        % con i 10 punti generati uniformemente in un ipercubo
+        fprintf(fid, "Execution time Modified Newton: %.4f\n", tempo_mn);
+        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_problem_213), fk3, k3, gradfk_norm3);
+        fprintf(fid, "Execution time Modified Newton with preconditioning: %.4f\n", tempo_mn_prec);
+        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_problem_213_prec), fk3_prec, k3_prec, gradfk_norm3_prec);
+        fprintf(fid, "Execution time Modified Newton with finite differences: %.4f\n", tempo_mn_fd);
+        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_problem_213_fd), fk3_fd, k3_fd, gradfk_norm3_fd);
+        fprintf(fid, "Execution time Modified Newton with finite differences and preconditioning: %.4f\n", tempo_mn_fd_prec);
+        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_problem_213_fd_prec), fk3_fd_prec, k3_fd_prec, gradfk_norm3_fd_prec);
+
+        % With 10 starting points generated with uniform distribution in a hyper-cube
         for i = 1:num_points
             
             x0_i = x_bar_problem_213 + 2 * rand(n,1) - 1;
     
-            % Newton classico
+            % Newton 
             [xk_rand, fk_rand, gradfk_norm_rand, k_rand] = ...
-                modified_newton_bcktrck(x0_i, problem_213_fun, ...
+                modified_newton_backtracking(x0_i, problem_213_fun, ...
                 problem_213_grad , problem_213_hess, ...
                 kmax, tolgrad, c1, rho, btmax);
 
@@ -153,9 +144,9 @@ for p=1:length(d)
                 count_failure_newton = count_failure_newton + 1;
             end
     
-            % Newton precondizionato
+            % Newton with preconditioning
             [xk_rand_prec, fk_rand_prec, gradfk_norm_rand_prec, k_rand_prec] = ...
-                modified_newton_bcktrck_preconditioning(x0_i, problem_213_fun, ...
+                modified_newton_backtracking_preconditioning(x0_i, problem_213_fun, ...
                 problem_213_grad , problem_213_hess, ...
                 kmax, tolgrad, c1, rho, btmax);
 
@@ -166,10 +157,9 @@ for p=1:length(d)
             end
     
             [xk_rand_fd, fk_rand_fd, gradfk_norm_rand_fd, k_rand_fd, xseq_fd, btseq_fd] = ...
-                modified_newton_bcktrck(x0_i, problem_213_fun, ...
+                modified_newton_backtracking(x0_i, problem_213_fun, ...
                 problem_213_grad_fd , problem_213_hess_fd, ...
                 kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
-            %x_newton_problem_213_fd = xk_fd;
 
             if gradfk_norm_rand_fd < epsilon
                 count_success_newton = count_success_newton + 1;
@@ -178,10 +168,9 @@ for p=1:length(d)
             end
     
             [xk_rand_fd_prec, fk_rand_fd_prec, gradfk_norm_rand_fd_prec, k_rand_fd_prec, xseq_fd_prec, btseq_fd_prec] = ...
-                modified_newton_bcktrck_preconditioning(x0_i, problem_213_fun, ...
+                modified_newton_backtracking_preconditioning(x0_i, problem_213_fun, ...
                 problem_213_grad_fd , problem_213_hess_fd, ...
                 kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
-            %x_newton_problem_213_fd_prec = xk_fd_prec;
 
             if gradfk_norm_rand_fd_prec < epsilon
                 count_success_newton = count_success_newton + 1;
@@ -189,15 +178,15 @@ for p=1:length(d)
                 count_failure_newton = count_failure_newton + 1;
             end
     
-            fprintf(fid, "n = %d | Punto #%d |norma2 di x= %.2e | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
                 n, i, norm(xk_rand), fk_rand, k_rand, gradfk_norm_rand);
-            fprintf(fid, "n = %d | Punto #%d |norma2 di x= %.2e | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
                 n, i, norm(xk_rand_prec), fk_rand_prec, k_rand_prec, gradfk_norm_rand_prec);
-            fprintf(fid, "n = %d | Punto #%d |norma2 di x= %.2e | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
                 n, i, norm(xk_rand_fd), fk_rand_fd, k_rand_fd, gradfk_norm_rand_fd);
-            fprintf(fid, "n = %d | Punto #%d |norma2 di x= %.2e | f(x) = %.4e | iter = %d (norm grad = %.2e)\n", ...
+            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
                 n, i, norm(xk_rand_prec), fk_rand_fd_prec, k_rand_fd_prec, gradfk_norm_rand_fd_prec);
-    
+
         end
     end
 
@@ -219,9 +208,9 @@ for n = [10,25,50]
     gamma_nm = 0.5;
     sigma_nm = 0.5;
 
-    fprintf('Sto stampando i simplessi per n= %d\n', n)
+    fprintf('Displaying results for n = %d\n', n);
 
-    % con il mio x_bar
+    % First starting point x_bar
     x_bar_problem_213 = ones(n,1);
 
     tic;
@@ -234,13 +223,12 @@ for n = [10,25,50]
         count_failure_nelder = count_failure_newton + 1;
     end
     
-
-    % Restituisco valore migliore del simplesso
     simplex_problem_213 = simplex_problem_213(:,1);
 
-    fprintf(fid, "Tempo di esecuzione Nelder Mead: %.4f\n", tempo_nelder_mead);
+    fprintf(fid, "Nelder-Mead execution time: %.4f\n", tempo_nelder_mead);
     fprintf(fid, "Nelder-Mead | n=%d | #%d | f(x)=%.4e\n", n, i, problem_213_fun(simplex_problem_213));
 
+    % With 10 starting points generated with uniform distribution in a hyper-cube
     for i = 1:num_points
         x0_i = x_bar_problem_213 + 2 * rand(n,1) - 1;
 
@@ -263,8 +251,6 @@ for n = [10,25,50]
     fprintf(fid, "n = %d | number of failures of nelder mead: %.4f\n", n, count_failure_nelder);
     
 end
-
-
 
 fclose(fid);
 

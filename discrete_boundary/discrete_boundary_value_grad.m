@@ -1,3 +1,5 @@
+% Compuets the gradient of the Discrete Boundary Value problem
+
 function grad = discrete_boundary_value_grad(x)
 
     n = length(x);
@@ -24,7 +26,9 @@ function grad = discrete_boundary_value_grad(x)
         if k > 1
             grad(k-1) = grad(k-1) + 2*(fk * df_dxkm1);
         end
+
         grad(k) = grad(k) + 2*(fk * df_dxk);
+
         if k < n
             grad(k+1) = grad(k+1) + 2*(fk * df_dxkp1);
         end

@@ -1,7 +1,8 @@
+% Computes the function value for the Discrete Boundary Value problem
+
 function F = discrete_boundary_value_fvalue(x)
 
     n = length(x);
-
     f = zeros(n,1);
     h = 1/(n+1);
 

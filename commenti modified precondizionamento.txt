@@ -1,0 +1,86 @@
+M_diag = diag(B_k);               % estrae la diagonale della matrice B_k
+M_diag(M_diag <= 0) = 1;          % sostituisce eventuali valori ≤ 0 con 1 (per evitare divisioni per zero o numeri negativi)
+n = length(xk);
+M = spdiags(M_diag, 0, n, n);     % costruisce la matrice diagonale sparsa M
+
+È una matrice di precondizionamento diagonale per il metodo PCG (conjugate gradient). Serve a:
+- migliorare la condizionatura del sistema lineare,
+- accelerare la convergenza di pcg.
+
+⚠️ Se qualche elemento diagonale è non positivo, lo si forza a 1 per assicurarsi che il precondizionatore sia ben definito.
+
+In sistesi cosa fa M?:
+- Estrae la diagonale della matrice B_k (che approssima la Hessiana regolarizzata).
+- Sostituisce eventuali elementi ≤ 0 con 1, per garantire stabilità.
+- Costruisce una matrice diagonale sparsa M usata come precondizionatore in pcg.
+
+Nel tuo codice, stai risolvendo un sistema lineare del tipo: 
+$$
+B_k \cdot p_k = -\nabla f_k
+$$
+
+dove:
+
+* $B_k$ è una **Hessiana regolarizzata** (quindi simmetrica e positiva definita),
+* $\nabla f_k$ è il gradiente della funzione,
+* $p_k$ è la direzione di discesa da calcolare.
+
+Poiché $B_k$ può essere **grande** e **sparse**, si usa il metodo **PCG (Preconditioned Conjugate Gradient)** invece del metodo diretto (es. `\` o `inv()`).
+
+---
+
+## ⚠️ **Problema: malcondizionamento**
+
+Se $B_k$ è **mal condizionata** (cioè ha rapporto tra massimo e minimo autovalore molto grande), il metodo CG converge lentamente.
+
+> 💡 **Condizionamento** è una misura di quanto piccoli errori nei dati si amplificano nei risultati. Matrici ben condizionate ⇒ CG converge velocemente.
+
+---
+
+## 🛠️ **Soluzione: Precondizionamento**
+
+L'idea del **precondizionamento** è di **trasformare il sistema** in uno "più facile" da risolvere per CG.
+
+### 🧮 Come funziona?
+
+Si pre-moltiplica entrambi i lati del sistema per $M^{-1}$, dove $M \approx B_k$, ma è **più semplice da invertire**.
+
+$$
+M^{-1} B_k p_k = -M^{-1} \nabla f_k
+$$
+
+Il sistema trasformato ha **le stesse soluzioni**, ma le proprietà numeriche (autovalori, condizionamento) sono migliori ⇒ **più veloce convergenza**.
+
+---
+
+## ✅ **Nel tuo codice: costruzione di M**
+
+```matlab
+M_diag = diag(B_k);
+M_diag(M_diag <= 0) = 1;       % sicurezza: no divisioni per 0 o negativi
+M = spdiags(M_diag, 0, n, n);  % matrice diagonale sparsa
+```
+
+Quindi:
+
+* **M** è una matrice **diagonale**, con gli stessi elementi della diagonale di $B_k$.
+* Se ci sono valori non positivi (pericolosi), vengono sostituiti con 1.
+
+---
+
+## 🎯 **Perché proprio la diagonale?**
+
+Perché:
+
+* è **facile da invertire** (inversione = 1/div),
+* cattura **l'informazione principale** di $B_k$,
+* migliora le prestazioni senza aggiungere troppa complessità.
+
+---
+
+## 💬 **In sintesi**
+
+* `M` è una **matrice di precondizionamento**: trasforma il sistema in uno **meglio condizionato**.
+* Nel tuo caso, è una **matrice diagonale sparsa**, facile da gestire.
+* Serve a far **convergere più velocemente** il metodo `pcg`.
+

@@ -1,7 +1,7 @@
 n = 10;
 h = 1 / (n + 1);
 
-% Griglia per x4 e x5
+% Grid for x4 e x5
 [x4_vals, x5_vals] = meshgrid(linspace(0, 1, 100), linspace(0, 1, 100));
 F_vals = zeros(size(x4_vals));
 
@@ -11,7 +11,6 @@ for i = 1:size(x4_vals, 1)
         x(4) = x4_vals(i, j);
         x(5) = x5_vals(i, j);
         
-        % Estendi x con x0 = 0 e x_{n+1} = 1
         x_ext = [0; x; 1];
         
         F = 0;
@@ -24,7 +23,7 @@ for i = 1:size(x4_vals, 1)
     end
 end
 
-% Plot 3D
+% Plot 
 surf(x4_vals, x5_vals, F_vals)
 xlabel('x_4')
 ylabel('x_5')

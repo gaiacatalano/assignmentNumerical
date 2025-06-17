@@ -1,3 +1,5 @@
+% Computes the gradient of the function for the Problem 213
+
 function grad = problem_213_grad(x)
 
     n = length(x);
