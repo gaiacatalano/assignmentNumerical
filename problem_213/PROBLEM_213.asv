@@ -7,7 +7,7 @@ addpath('../');
 % Seed
 rng(349131);
 
-d = 3:1:3 ; 
+d = 3:1:5; 
 num_points = 10;
 
 % Stopping parameters
@@ -193,7 +193,7 @@ for p=1:length(d)
             fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e | tempo = %.2f\n", ...
                 n, i, norm(xk_rand_fd), fk_rand_fd, k_rand_fd, gradfk_norm_rand_fd, tempo_mn_fd_rand);
             fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e | tempo = %.2f\n", ...
-                n, i, norm(xk_rand_prec), fk_rand_fd_prec, k_rand_fd_prec, gradfk_norm_rand_fd_prec, tempo_mn_fd_prec_rand);
+                n, i, norm(xk_rand_prec), fk_rand_fd_prec, k_rand_fd_prec, gradfk_norm_rand_fd_prec, tem);
 
         end
     end

@@ -18,25 +18,20 @@ function hess = discrete_boundary_value_hess(x)
     xkp1 = x_ext(3:n+2);
 
     a = xk + h*k + 1;     % appears everywhere
-    fk = 2*xk - xkm1 - xkp1 + 0.5*h^2*a.^3;
+    fk = 2*xk - xkm1 - xkp1 + 0.5*h^2*s.^3;
 
     % Derivatives of f_k
-    df_dxk   = 2 + 1.5*h^2*a.^2;
-    df_dxkm1 = -ones(n,1);
-    df_dxkp1 = -ones(n,1);
+    df_dxk   = 2 + 1.5*h^2*s.^2;
+    df_dxkm1 = -1;
+    df_dxkp1 = -1;
 
     % Second derivative
-    d2f_dxk2 = 3*h^2 * a;
+    d2f_dxk2 = 3*h^2 * s;
 
     d0 = fk.*d2f_dxk2 + df_dxk.^2 + [df_dxkp1(1:n-1).^2;0] + [0; df_dxkm1(2:n).^2];
-    dm1 = - df_dxkp1(2:n).*df_dxk(1:n-1) - df_dxk(2:n).*df_dxkm1(2:n);
-    dm1 = [dm1; 0];
-    dm2 =2*ones(n,1);
-    dm2(n-1:n) = 0;
+    dm1 = -fk(2:n).*d2f_dxk2(2:n) - df_dxkp1(2:n).*df_dxk(1:n-1) - df_dxk(2:n).*df_dxkm1(2:n);
+    dm1 = 
 
-    hess = spdiags([dm2 dm1 2*d0 [0; 2*dm1(1:end-1)] [0; 0; dm2(1:end-2)]], [-2 -1 0 1 2], n, n);
-    hess = 0.5 * (hess + hess.');
-end
 
 %     d0 = zeros(n,1);
 %     dm1 = zeros(n,1);

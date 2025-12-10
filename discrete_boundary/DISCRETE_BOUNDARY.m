@@ -7,7 +7,7 @@ addpath('../');
 % Seed
 rng(349131);
 
-d = 3:1:5; 
+d = 3:1:3; 
 num_points = 10;
 
 % Stopping parameters
@@ -25,6 +25,12 @@ discrete_boundary_value_hess_fd = @discrete_boundary_value_hess_fd;
 fid = fopen('output_discrete_boundary.txt', 'w');
     
 % ======================= MODIFIED NEWTON ===========================
+% Newton parameters
+tolgrad = 1e-06;
+rho = 0.5;
+c1 = 1e-4;
+btmax = 1000; 
+
 for p=1:length(d)
 
     fprintf('Displaying results for p = %d\n', p);
@@ -32,22 +38,20 @@ for p=1:length(d)
     n = 10^d(p);
     fprintf(fid, "n = %d\n", n);
 
-    % Newton parameters
-    tolgrad = 1e-06;
-    rho = 0.5;
-    c1 = 1e-4;
-    btmax = 1000; 
-
     % First starting point x_bar
-    x_bar_discrete_boundary_value = zeros(n,1);
+    %x_bar_discrete_boundary_value = zeros(n,1);
     h = 1/(n+1);
-    for i=1:n
-        x_bar_discrete_boundary_value(i) = i*h*(1-i*h);
-    end
+    %for i=1:n
+    %    x_bar_discrete_boundary_value(i) = i*h*(1-i*h);
+    %end
+    i = (1:n)';  % colonna
+    x_bar_discrete_boundary_value = i*h .* (1 - i*h);
 
     hstep_i=0;
 
     for k = 2:2:24
+        fprintf('Displaying results for k = %d\n', k);
+
 
         if k > 12
             hstep  = 10^(-(k-12));
@@ -100,6 +104,8 @@ for p=1:length(d)
     
         % With 10 starting points generated with uniform distribution in a hyper-cube
         for i = 1:num_points
+
+            fprintf('Starting random point loop, n = %d\n', i);
     
             x0_i = x_bar_discrete_boundary_value + 2 * rand(n,1) - 1;
     
@@ -115,33 +121,35 @@ for p=1:length(d)
                 kmax, tolgrad, c1, rho, btmax);
             x_newton_discrete_boundary_value_prec = xk2_prec;
     
-            [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
-                modified_newton_backtracking(x0_i, discrete_boundary_value_fun, ...
-                discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
-                kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
-            x_newton_discrete_boundary_value_fd = xk2_fd;
-    
-            [xk2_fd_prec, fk2_fd_prec, gradfk_norm2_fd_prec, k2_fd_prec, xseq2_fd_prec, btseq2_fd_prec] = ...
-                modified_newton_backtracking_preconditioning(x0_i, discrete_boundary_value_fun, ...
-                discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
-                kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
-            x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
-    
+            % [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
+            %     modified_newton_backtracking(x0_i, discrete_boundary_value_fun, ...
+            %     discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
+            %     kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
+            % x_newton_discrete_boundary_value_fd = xk2_fd;
+            % 
+            % [xk2_fd_prec, fk2_fd_prec, gradfk_norm2_fd_prec, k2_fd_prec, xseq2_fd_prec, btseq2_fd_prec] = ...
+            %     modified_newton_backtracking_preconditioning(x0_i, discrete_boundary_value_fun, ...
+            %     discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
+            %     kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
+            % x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
+            % 
              fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
                  n, i, norm(x_newton_discrete_boundary_value), fk2, k2, gradfk_norm2);
             fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
                 n, i, norm(x_newton_discrete_boundary_value_prec), fk2_prec, k2_prec, gradfk_norm2_prec);
-            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
-                n, i, norm(x_newton_discrete_boundary_value_fd), fk2_fd, k2_fd, gradfk_norm2_fd);
-            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
-                n, i, norm(x_newton_discrete_boundary_value_fd_prec), fk2_fd_prec, k2_fd_prec, gradfk_norm2_fd_prec);
+            % fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
+            %     n, i, norm(x_newton_discrete_boundary_value_fd), fk2_fd, k2_fd, gradfk_norm2_fd);
+            % fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
+            %     n, i, norm(x_newton_discrete_boundary_value_fd_prec), fk2_fd_prec, k2_fd_prec, gradfk_norm2_fd_prec);
     
         end
     end
 end
 
+fclose(fid);
 
-% ======================= NELDER-MEAD ===========================
+
+%% ======================= NELDER-MEAD ===========================
 
 for n = [10,25,50]
 

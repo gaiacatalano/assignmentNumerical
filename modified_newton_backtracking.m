@@ -52,7 +52,7 @@ while k < kmax && gradfk_norm >= tolgrad
     B_k = Hessfk + E_k;
     [pk, ~] = pcg(B_k, -gradfk, 1e-6, kmax);
 
-    alpha = 0.5;
+    alpha = 1;
     
     xnew = xk + alpha * pk;
     fnew = f(xnew);

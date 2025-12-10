@@ -1,10 +1,10 @@
 Modified Newton method
 n = 1000
-Execution time Modified Newton: 3.0409
-n = 1000 | 2-norm of x = 3.16e+01 | f(x) = 1.5345e-03 | iter = 2000 | grad norm = 3.02e-03
-Execution time Modified Newton with preconditioning: 3.0016
-n = 1000 | 2-norm of x = 3.16e+01 | f(x) = 1.5345e-03 | iter = 2000 | grad norm = 3.02e-03
-Execution time Modified Newton with finite differences: 6.4527
-n = 1000 | 2-norm of x = 3.14e+01 | f(x) = 3.2246e-01 | iter = 2000 | grad norm = 1.62e+00
-Execution time Modified Newton with finite differences and preconditioning: 6.4232
-n = 1000 | 2-norm of x = 3.14e+01 | f(x) = 3.2246e-01 | iter = 2000 | grad norm = 1.62e+00
+Execution time Modified Newton: 0.4171
+n = 1000 | 2-norm of x = 3.00e+01 | f(x) = 6.3207e-08 | iter = 3 | grad norm = 3.37e-07 | tempo = 0.42
+Execution time Modified Newton with preconditioning: 0.4326
+n = 1000 | 2-norm of x = 3.04e+01 | f(x) = 1.2373e-07 | iter = 2 | grad norm = 8.06e-07 | tempo = 0.43
+Execution time Modified Newton with finite differences: 8.5874
+n = 1000 | 2-norm of x = 3.02e+01 | f(x) = 6.1564e-08 | iter = 3 | grad norm = 4.12e-07 | tempo = 8.59
+Execution time Modified Newton with finite differences and preconditioning: 9.2759
+n = 1000 | 2-norm of x = 3.05e+01 | f(x) = 1.2468e-07 | iter = 2 | grad norm = 6.46e-07 | tempo = 9.28

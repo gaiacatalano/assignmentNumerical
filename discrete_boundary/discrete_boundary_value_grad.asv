@@ -20,18 +20,11 @@ function grad = discrete_boundary_value_grad(x)
 
     % diagonal contribute
     grad = grad + (2*fk) .* df_dxk;
-
-    % contribute from df_dx{k-1} = -1
-    % grad(k-1) += 2*fk * (-1)
-    % so we need to modifiy the gradiet up to the second to last element
-    grad(1:n-1) = grad(1:n-1) - 2*fk(2:n);
-
     % contribute from df_dx{k+1} = -1
-    % grad(k+1) += 2*fk * (-1)
-    % so we need to modify the gradient from the second element
-    grad(2:n)   = grad(2:n)   - 2*fk(1:n-1);
+    % grad(k-1) += 2*fk * (-1)
+    % so we ned
 
-end
+
 
 %     x_first = 0;
 %     x_last = 0;
@@ -63,4 +56,4 @@ end
 % 
 %     end
 % 
-% end
+end
