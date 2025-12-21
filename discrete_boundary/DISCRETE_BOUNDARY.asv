@@ -14,6 +14,15 @@ num_points = 10;
 tol = 1e-06;
 kmax = 10000;
 
+% Treashold norm_grad
+epsilon = 1e-3;
+
+% Count
+count_success_newton = 0; 
+count_failure_newton = 0;
+count_success_nelder = 0;
+count_failure_nelder = 0;
+
 % Function recall
 discrete_boundary_value_fun = @discrete_boundary_value_fvalue;
 discrete_boundary_value_grad = @discrete_boundary_value_grad;
@@ -25,18 +34,23 @@ discrete_boundary_value_hess_fd = @discrete_boundary_value_hess_fd;
 fid = fopen('output_discrete_boundary.txt', 'w');
     
 % ======================= MODIFIED NEWTON ===========================
+
 % Newton parameters
 tolgrad = 1e-06;
 rho = 0.5;
 c1 = 1e-4;
 btmax = 1000; 
 
+fprintf(fid, "Modified Newton method - Tables\n\n");
+
 for p=1:length(d)
 
-    fprintf('Displaying results for p = %d\n', p);
-
     n = 10^d(p);
+
+    fprintf('Running tests for n = %d\n', n);
+    fprintf(fid, "============================================================\n");
     fprintf(fid, "n = %d\n", n);
+    fprintf(fid, "============================================================\n\n");
 
     % First starting point x_bar
     %x_bar_discrete_boundary_value = zeros(n,1);
@@ -49,9 +63,7 @@ for p=1:length(d)
 
     hstep_i=0;
 
-    for k = 2:2:24
-        fprintf('Displaying results for k = %d\n', );
-
+    for k = 2 %2:2:24
 
         if k > 12
             hstep  = 10^(-(k-12));
@@ -60,94 +72,105 @@ for p=1:length(d)
             hstep  = 10^(-k);
         end
 
+        % Build a table for (n, hstep)
+        rows = struct('start',{},'method',{},'iter',{},'xnorm',{},'fval',{},'gnorm',{},'time',{});
+
+        % With x_bar as a starting point
+        startLabel = 'x_bar';
+
+        % 1) Modified Newton
         tic;
         [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
             modified_newton_backtracking(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
             discrete_boundary_value_grad , discrete_boundary_value_hess, ...
             kmax, tolgrad, c1, rho, btmax);
         tempo_mn = toc;
-        x_newton_discrete_boundary_value = xk2;
-    
+        rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton", k3, norm(xk2), fk2, gradfk_norm2, tempo_mn);
+        [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm2, epsilon, count_success_newton, count_failure_newton);
+
+        % 2) Modified Newton + Prec
         tic;
         [xk2_prec, fk2_prec, gradfk_norm2_prec, k2_prec, xseq2_prec, btseq2_prec] = ...
             modified_newton_backtracking_preconditioning(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
             discrete_boundary_value_grad , discrete_boundary_value_hess, ...
             kmax, tolgrad, c1, rho, btmax);
         tempo_mn_prec = toc;
-    
-        x_newton_discrete_boundary_value_prec = xk2_prec;
-    
+        rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton + Prec", k2_prec, norm(xk2_prec), fk2_prec, gradfk_norm2_prec, tempo_mn_prec);
+        [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm2_prec, epsilon, count_success_newton, count_failure_newton);
+
+        % 3) Modified Newton FD
         tic;
         [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
             modified_newton_backtracking(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
             discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
             kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
         tempo_mn_fd = toc;
-        x_newton_discrete_boundary_value_fd = xk2_fd;
-    
+        rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton FD", k2_fd, norm(xk2_fd), fk2_fd, gradfk_norm2_fd, tempo_mn_fd);
+        [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm2_fd, epsilon, count_success_newton, count_failure_newton);
+        
+        % 4) Modified Newton FD + Prec
         tic;
         [xk2_fd_prec, fk2_fd_prec, gradfk_norm2_fd_prec, k2_fd_prec, xseq2_fd_prec, btseq2_fd_prec] = ...
             modified_newton_backtracking_preconditioning(x_bar_discrete_boundary_value, discrete_boundary_value_fun, ...
             discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
             kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
         tempo_mn_fd_prec = toc;
-        x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
-         
-        fprintf(fid, "Execution time Modified Newton: %.4f\n", tempo_mn);
-        fprintf(fid,  "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_discrete_boundary_value), fk2, k2, gradfk_norm2);
-        fprintf(fid, "Execution time Modified Newton with preconditioning: %.4f\n", tempo_mn_prec);
-        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_discrete_boundary_value_prec), fk2_prec, k2_prec, gradfk_norm2_prec);
-        fprintf(fid, "Execution time Modified Newton with finite differences: %.4f\n", tempo_mn_fd);
-        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_discrete_boundary_value_fd), fk2_fd, k2_fd, gradfk_norm2_fd);
-        fprintf(fid, "Execution time Modified Newton with finite differences and preconditioning: %.4f\n", tempo_mn_fd_prec);
-        fprintf(fid, "n = %d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d | grad norm = %.2e\n", n, norm(x_newton_discrete_boundary_value_fd_prec), fk2_fd_prec, k2_fd_prec, gradfk_norm2_fd_prec);
-    
+        rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton FD + Prec", k3_fd_prec, norm(xk3_fd_prec), fk3_fd_prec, gradfk_norm3_fd_prec, tempo_mn_fd_prec);
+        [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm3_fd_prec, epsilon, count_success_newton, count_failure_newton);
+
+       
         % With 10 starting points generated with uniform distribution in a hyper-cube
         for i = 1:num_points
     
             x0_i = x_bar_discrete_boundary_value + 2 * rand(n,1) - 1;
-    
+            startLabel = sprintf('%d', i); % tabella: 1..10
+
+            % 1) Modified Newton
+            tic;
             [xk2, fk2, gradfk_norm2, k2, xseq2, btseq2] = ...
                 modified_newton_backtracking(x0_i, discrete_boundary_value_fun, ...
                 discrete_boundary_value_grad , discrete_boundary_value_hess, ...
                 kmax, tolgrad, c1, rho, btmax);
-            x_newton_discrete_boundary_value = xk2;
-        
+            tempo_mn_rand = toc;
+            rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton", k2, norm(xk2), fk2, gradfk_norm2, tempo_mn_rand);
+            [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm2, epsilon, count_success_newton, count_failure_newton);
+
+            % 2) Modified Newton + Prec
+            tic;
             [xk2_prec, fk2_prec, gradfk_norm2_prec, k2_prec, xseq2_prec, btseq2_prec] = ...
                 modified_newton_backtracking_preconditioning(x0_i, discrete_boundary_value_fun, ...
                 discrete_boundary_value_grad , discrete_boundary_value_hess, ...
                 kmax, tolgrad, c1, rho, btmax);
-            x_newton_discrete_boundary_value_prec = xk2_prec;
-    
+            tempo_mn_rand_prec = toc;
+            rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton + Prec", k2_prec, norm(xk2_prec), fk2_prec, gradfk_norm2_prec, tempo_mn_prec_rand);
+            [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm2_prec, epsilon, count_success_newton, count_failure_newton);
+  
+            % 3) Modified Newton FD
+            tic;
             [xk2_fd, fk2_fd, gradfk_norm2_fd, k2_fd, xseq2_fd, btseq2_fd] = ...
                 modified_newton_backtracking(x0_i, discrete_boundary_value_fun, ...
                 discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
                 kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
-            x_newton_discrete_boundary_value_fd = xk2_fd;
-    
+            tempo_mn_fd_rand = toc;
+            rows(end+1) = experiment_utils('make_row',startLabel, "Modified Newton FD", k2_fd, norm(xk2_fd), fk2_fd, gradfk_norm2_fd, tempo_mn_fd_rand);
+            [count_success_newton, count_failure_newton] = experiment_utils('update_counts',gradfk_norm2_fd, epsilon, count_success_newton, count_failure_newton);
+
+            
+
+
             [xk2_fd_prec, fk2_fd_prec, gradfk_norm2_fd_prec, k2_fd_prec, xseq2_fd_prec, btseq2_fd_prec] = ...
                 modified_newton_backtracking_preconditioning(x0_i, discrete_boundary_value_fun, ...
                 discrete_boundary_value_grad_fd , discrete_boundary_value_hess_fd, ...
                 kmax, tolgrad, c1, rho, btmax, hstep, hstep_i);
             x_newton_discrete_boundary_value_fd_prec = xk2_fd_prec;
-    
-             fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
-                 n, i, norm(x_newton_discrete_boundary_value), fk2, k2, gradfk_norm2);
-            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
-                n, i, norm(x_newton_discrete_boundary_value_prec), fk2_prec, k2_prec, gradfk_norm2_prec);
-            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
-                n, i, norm(x_newton_discrete_boundary_value_fd), fk2_fd, k2_fd, gradfk_norm2_fd);
-            fprintf(fid, "n = %d | Point #%d | 2-norm of x = %.2e | f(x) = %.4e | iter = %d (grad norm = %.2e)\n", ...
-                n, i, norm(x_newton_discrete_boundary_value_fd_prec), fk2_fd_prec, k2_fd_prec, gradfk_norm2_fd_prec);
-    
+
+
         end
     end
 end
 
-fclose(fid);
 
-
-%% ======================= NELDER-MEAD ===========================
+% ======================= NELDER-MEAD ===========================
 
 for n = [10,25,50]
 

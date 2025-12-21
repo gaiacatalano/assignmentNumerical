@@ -1,5 +1,0 @@
-===== Random points, n = 1000 =====
-
-Point 1 | Newton: iter = 10000 | f = 1.331e-02 | grad = 1.616e-02
-Point 1 | Newton + prec: iter = 10000 | f = 1.331e-02 | grad = 1.613e-02
-
