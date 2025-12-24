@@ -12,7 +12,7 @@ num_points = 10;
 
 % Stopping parameters
 tol = 1e-06;
-kmax = 1000;
+kmax = 10000;
 
 % Treashold norm_grad
 epsilon = 1e-3;
@@ -57,7 +57,7 @@ for p=1:length(d)
 
     hstep_i = 0;
 
-    for k = 2 %:2:24        
+    for k = 4 %:2:24        
              
         if k > 12
             hstep  = 10^(-(k-12));
