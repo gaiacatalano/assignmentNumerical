@@ -1,7 +1,7 @@
 function H = chained_rosenbrock_hess_fd(x, h, bool_hstep_i)
 
     n = length(x);
-    H = zeros(n,n);
+    H = sparse(n,n);
 
     if bool_hstep_i==1
         hstep_i = abs(x)*h;

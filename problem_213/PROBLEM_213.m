@@ -12,7 +12,7 @@ num_points = 10;
 
 % Stopping parameters
 tol = 1e-06;
-kmax = 10000;
+kmax = 1000;
 
 % Treashold norm_grad
 epsilon = 1e-3;
@@ -57,7 +57,7 @@ for p=1:length(d)
 
     hstep_i = 0;
 
-    for k = 4 %:2:24        
+    for k = 20 %2:2:24        
              
         if k > 12
             hstep  = 10^(-(k-12));
@@ -174,73 +174,73 @@ for p=1:length(d)
 
 end
 
-
-% ======================= NELDER-MEAD ===========================
-
-fprintf(fid, "\n\n============================================================\n");
-fprintf(fid, "NELDER-MEAD method - Tables\n");
-fprintf(fid, "============================================================\n\n");
-
-for n = [10,25,50]
-
-    % Nelder-Mead parameters
-    rho_nm = 1;
-    chi_nm = 2;
-    gamma_nm = 0.5;
-    sigma_nm = 0.5;
-
-    fprintf('Running Nelder-Mead for n = %d\n', n);
-
-    % First starting point x_bar
-    x_bar_problem_213 = ones(n,1);
-
-    % Prepare table rows for this n
-    rows_nm = struct('start',{},'method',{},'iter',{},'xnorm',{},'fval',{},'D',{},'time',{});
-
-    % With x_bar as a starting point 
-    startLabel = 'x_bar';
-
-    tic;
-    simplex_problem_213 = nelder_mead_n(x_bar_problem_213, problem_213_fun, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
-    tempo_nelder_mead = toc; 
-
-    D = max(pdist(simplex_problem_213'));   
-    x_best = simplex_problem_213(:,1);
-
-    rows_nm(end+1) = experiment_utils('make_row_nm', startLabel, "Nelder-Mead", NaN, norm(x_best), ...
-                                  problem_213_fun(x_best), D, tempo_nelder_mead);
-    [count_success_nelder, count_failure_nelder] = ...
-    experiment_utils('update_counts', D, epsilon, count_success_nelder, count_failure_nelder);
-
-
-    % With 10 starting points generated with uniform distribution in a hyper-cube
-    for i = 1:num_points
-
-        x0_i = x_bar_problem_213 + 2 * rand(n,1) - 1;
-
-        tic;
-        simplex_i = nelder_mead_n(x0_i, problem_213_fun, n , ...
-            rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
-        tempo_nelder_mead = toc; 
-
-        Di = max(pdist(simplex_i'));
-        x_best_i = simplex_i(:,1);
-
-        rows_nm(end+1) = experiment_utils('make_row_nm', startLabel, "Nelder-Mead", NaN, norm(x_best_i), ...
-                                  problem_213_fun(x_best_i), D, tempo_nelder_mead);
-        [count_success_nelder, count_failure_nelder] = ...
-        experiment_utils('update_counts', D, epsilon, count_success_nelder, count_failure_nelder);
-       
-    end
-
-    experiment_utils('print_table_nelder', fid, n, rows_nm);
-
-    % Summary counts (per n)
-    fprintf(fid, "\nSUMMARY for n = %d\n", n);
-    fprintf(fid, "Successes (||grad|| < %.1e): %d\n", epsilon, count_success_nelder);
-    fprintf(fid, "Failures  (||grad|| >= %.1e): %d\n\n", epsilon, count_failure_nelder);
-    
-end
+% 
+% % ======================= NELDER-MEAD ===========================
+% 
+% fprintf(fid, "\n\n============================================================\n");
+% fprintf(fid, "NELDER-MEAD method - Tables\n");
+% fprintf(fid, "============================================================\n\n");
+% 
+% for n = [10,25,50]
+% 
+%     % Nelder-Mead parameters
+%     rho_nm = 1;
+%     chi_nm = 2;
+%     gamma_nm = 0.5;
+%     sigma_nm = 0.5;
+% 
+%     fprintf('Running Nelder-Mead for n = %d\n', n);
+% 
+%     % First starting point x_bar
+%     x_bar_problem_213 = ones(n,1);
+% 
+%     % Prepare table rows for this n
+%     rows_nm = struct('start',{},'method',{},'iter',{},'xnorm',{},'fval',{},'D',{},'time',{});
+% 
+%     % With x_bar as a starting point 
+%     startLabel = 'x_bar';
+% 
+%     tic;
+%     simplex_problem_213 = nelder_mead_n(x_bar_problem_213, problem_213_fun, n , rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+%     tempo_nelder_mead = toc; 
+% 
+%     D = max(pdist(simplex_problem_213'));   
+%     x_best = simplex_problem_213(:,1);
+% 
+%     rows_nm(end+1) = experiment_utils('make_row_nm', startLabel, "Nelder-Mead", NaN, norm(x_best), ...
+%                                   problem_213_fun(x_best), D, tempo_nelder_mead);
+%     [count_success_nelder, count_failure_nelder] = ...
+%     experiment_utils('update_counts', D, epsilon, count_success_nelder, count_failure_nelder);
+% 
+% 
+%     % With 10 starting points generated with uniform distribution in a hyper-cube
+%     for i = 1:num_points
+% 
+%         x0_i = x_bar_problem_213 + 2 * rand(n,1) - 1;
+% 
+%         tic;
+%         simplex_i = nelder_mead_n(x0_i, problem_213_fun, n , ...
+%             rho_nm, chi_nm, gamma_nm, sigma_nm, kmax, tol);
+%         tempo_nelder_mead = toc; 
+% 
+%         Di = max(pdist(simplex_i'));
+%         x_best_i = simplex_i(:,1);
+% 
+%         rows_nm(end+1) = experiment_utils('make_row_nm', startLabel, "Nelder-Mead", NaN, norm(x_best_i), ...
+%                                   problem_213_fun(x_best_i), D, tempo_nelder_mead);
+%         [count_success_nelder, count_failure_nelder] = ...
+%         experiment_utils('update_counts', D, epsilon, count_success_nelder, count_failure_nelder);
+% 
+%     end
+% 
+%     experiment_utils('print_table_nelder', fid, n, rows_nm);
+% 
+%     % Summary counts (per n)
+%     fprintf(fid, "\nSUMMARY for n = %d\n", n);
+%     fprintf(fid, "Successes (||grad|| < %.1e): %d\n", epsilon, count_success_nelder);
+%     fprintf(fid, "Failures  (||grad|| >= %.1e): %d\n\n", epsilon, count_failure_nelder);
+% 
+% end
 
 fclose(fid);
 

@@ -12,7 +12,7 @@ function H = discrete_boundary_value_hess_fd(x, hstep, bool_hstep_i)
     end
 
     n = length(x);
-    H = zeros(n,n);
+    H = sparse(n,n);
 
     if bool_hstep_i==1
         hstep_i= abs(x)*hstep;

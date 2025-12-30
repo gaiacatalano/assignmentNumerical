@@ -4,7 +4,7 @@
 function H = problem_213_hess_fd(x, hstep, bool_hstep_i)
 
     n = length(x);
-    H = zeros(n,n);
+    H = sparse(n,n);
 
     if nargin < 2 || isempty(hstep)
         hstep = 1e-5;
